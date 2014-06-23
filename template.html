@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Supporter</title>
+	<meta charset="ISO-8859-1">
+
+	<script src="/moodleNils26/report/toverview/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/moodleNils26/report/toverview/js/jquery-ui-1.10.4.min.js" type="text/javascript"></script>
+
+	<!-- Include one of jTable styles. -->
+	<script src="/moodleNils26/report/toverview/jtable/jquery.jtable.min.js" type="text/javascript"></script>
+	
+	<!-- Include jTable script file. -->
+	<link href="/moodleNils26/report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
+
+	<link rel="stylesheet" href="/../../moodleNils26/report/toverview/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="/../../moodleNils26/report/toverview/css/bootstrap-theme.min.css">
+ 
+	<!-- Create table -->
+	<script type="text/javascript">
+	    $(document).ready(function () {
+    	
+	    	$('#courses').jtable({
+     	       //title: 'Kurse',
+        	    actions: {
+           	 		listAction: function (postData, jtParams) {
+            	    	return $.Deferred(function ($dfd) {
+            	        	$.ajax({
+            	            	url: '/moodleNils26/report/toverview/rest/routerSupporter.php/course/',
+            	            	type: 'GET',
+            	            	dataType: 'json',
+            	            	data: postData,
+            	            	success: function (data) {
+            	            	    $dfd.resolve(data);
+            	            	},
+            	            	error: function () {
+            	            	    $dfd.reject();
+            	            	}
+            	        	});
+            	    	});
+            		}
+            	},
+            	fields: {
+                		id: {
+                			title: 'ID',
+                    		key: true,
+                    		list: true,
+                    		width: '1%'
+                		},
+                		semester: {
+                    		title: 'Semester',
+                    		width: '3%'
+                		},
+                		fb: {
+                    		title: 'FB',
+                    		width: '5%'
+                		},
+                		fullname: {
+                    		title: 'Name'
+                		}
+            	}
+        	});
+        	$('#courses').jtable('load');
+        	
+        	jQuery(function($) {
+        		$('#search').keyup(function() {
+        			var value = $(this).val();
+        			$('#courses').jtable('load', {query: value});
+        		}).keyup;
+        	});
+        	
+        	jQuery(document.body).on('click', 'tr', function(event) {
+    			$.get("/moodleNils26/report/toverview/template_detailed_course.html", function( inhalt ) {
+    				var x = $(event.currentTarget);
+    				//console.log(x.attr('data-record-key'));
+    				inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
+    				//console.log(inhalt);
+    				$( "#getCourse" ).html(inhalt);
+    			});
+    		});
+        	
+    		});
+	</script>
+</head>
+
+<body>
+	<div class="row">
+		<div class="col-md-6">
+			<div>
+				Kurs suchen:
+        		<input id="search"></input>
+        	</div>
+    	</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+        	<div id="courses"></div>
+        </div>
+        <div class="col-md-6">
+			<div id = "getCourse"></div>
+    	</div>
+	</div>
+</body>
+
+</html>
