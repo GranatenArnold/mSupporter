@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="/moodleNils26/report/toverview/js/pure.js"></script>
+		<script src="../../report/toverview/js/pure.js"></script>
 	</head>
 	
 	<body>
@@ -44,7 +44,7 @@
 		<script>
 			$
 				.ajax({
-					url : "/moodleNils26/report/toverview/rest/routerSupporter.php/course/id/#ID#",
+					url : "../../report/toverview/rest/routerSupporter.php/course/id/#ID#",
 					context : document.body
 				})
 				.done(
@@ -59,21 +59,21 @@
 									var fb = a.fb;
 									var courseID = a.id;
 									var shortname = a.shortname;
-									var imgLink = "<img width='30px' src='/moodleNils26/report/toverview/pix/"
+									var imgLink = "<img width='30px' src='../../report/toverview/pix/"
 										if (a.visible == 1) {
 											imgLink = imgLink + "show.png";
 										} else {
 											imgLink = imgLink + "hide.png";
 										}
 									imgLink = imgLink + "' />";
-									var semesterLink = "<a href='/../../moodleNils26/course/index.php?categoryid="
+									var semesterLink = "<a href='../../course/index.php?categoryid="
 											+ semesterID
 											+ "'>"
 											+ semester
 											+ "</a>";
-									var fbLink = "<a href='/../../moodleNils26/course/index.php?categoryid="
+									var fbLink = "<a href='../../course/index.php?categoryid="
 											+ fbID + "'>" + fb + "</a>";
-									var courseLink = "<a href='/../../moodleNils26/course/view.php?id="
+									var courseLink = "<a href='../../course/view.php?id="
 											+ courseID
 											+ "'>"
 											+ shortname
@@ -93,7 +93,7 @@
 								'#fullname' : function(a) {
 									a = a.context;
 									
-									return "<h3><a href='/../../moodleNils26/course/view.php?id="
+									return "<h3><a href='../../course/view.php?id="
 									+ a.id + "'>"
 									+ a.fullname
 									+ "</a></h3>"
@@ -103,7 +103,7 @@
 								'#personen' : function (a) {
 									a = a.context;
 									
-									return "<h4><a href='/../../moodleNils26/enrol/users.php?id="
+									return "<h4><a href='../../enrol/users.php?id="
 											+ a.id
 											+ "'>"
 											+ "Personen:</a></h4>";
@@ -115,13 +115,13 @@
 									var LehrendeArray = new Array();
 									var Lehrende = "";
 									for (key in lehrende) {
-										Lehrende = Lehrende + "<a href= '/../../moodleNils26/user/profile.php?id=" + lehrende[key].userid + "'>"
+										Lehrende = Lehrende + "<a href= '../../user/profile.php?id=" + lehrende[key].userid + "'>"
 												+ lehrende[key].firstname + " " + lehrende[key].lastname + "</a><br />";
 										LehrendeArray.push(lehrende[key].lastname);
 									}
 									var anzahlLehrende = LehrendeArray.length;
 									
-									return "<h5><b><a href='/../../moodleNils26/enrol/users.php?id="
+									return "<h5><b><a href='../../enrol/users.php?id="
 											+ a.id
 											+ "&role=3&submitbutton=Filter'>Lehrende ("
 											+ anzahlLehrende
@@ -136,13 +136,13 @@
 									var AssistenzArray = new Array();
 									var Assistenz = "";
 									for (key in assistenz) {
-										Assistenz = Assistenz + "<a href= '/../../moodleNils26/user/profile.php?id=" + assistenz[key].userid + "'>"
+										Assistenz = Assistenz + "<a href= '../../user/profile.php?id=" + assistenz[key].userid + "'>"
 												+ assistenz[key].firstname + " " + assistenz[key].lastname + "</a><br />";
 										AssistenzArray.push(assistenz[key].lastname);
 									}
 									var anzahlAssistenz = AssistenzArray.length;
 									
-									return "<h5><b><a href='/../../moodleNils26/enrol/users.php?id="
+									return "<h5><b><a href='../../enrol/users.php?id="
 											+ a.id
 											+ "&role=9&submitbutton=Filter'>Assistenten ("
 											+ anzahlAssistenz
@@ -158,13 +158,13 @@
 									var Tutoren = "";
 									for (key in tutoren) {
 										Tutoren = Tutoren
-												+ "<a href= '/../../moodleNils26/user/profile.php?id=" + tutoren[key].userid + "'>"
+												+ "<a href= '../../user/profile.php?id=" + tutoren[key].userid + "'>"
 												+ tutoren[key].firstname + " " + tutoren[key].lastname + "</a><br />";
 										TutorenArray.push(tutoren[key].lastname);
 									}
 									var anzahlTutoren = TutorenArray.length;
 									
-									return "<h5><b><a href='/../../moodleNils26/enrol/users.php?id="
+									return "<h5><b><a href='../../enrol/users.php?id="
 											+ a.id
 											+ "&role=4&submitbutton=Filter'>Tutoren ("
 											+ anzahlTutoren
@@ -182,7 +182,7 @@
 									}
 									var anzahlStudenten = StudentenArray.length;
 									
-									return "<h5><b><a href='/../../moodleNils26/enrol/users.php?id="
+									return "<h5><b><a href='../../enrol/users.php?id="
 											+ a.id
 											+ "&role=5&submitbutton=Filter'>Teilnehmeranzahl (Studenten): "
 											+ anzahlStudenten
@@ -213,7 +213,7 @@
 									a = a.context;
 									var methoden = a.Einschreibemethoden;
 									var Methoden = "";
-									var imgLink = "<img width='20px' src='/moodleNils26/report/toverview/pix/";
+									var imgLink = "<img width='20px' src='../../report/toverview/pix/";
 									var temp = "";
 									var selfPassword = "";
 									var enrolments = a.UserEnrolments;
@@ -256,7 +256,7 @@
 									}
 									
 									return "<br />"
-											+ "<h4><a href='/../../moodleNils26/enrol/instances.php?id="
+											+ "<h4><a href='../../enrol/instances.php?id="
 											+ a.id
 											+ "'>Einschreibemethoden: </a></h4>"
 											+ Methoden;

@@ -8,21 +8,21 @@
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	
-		<link rel="stylesheet" href="/moodleNils26/report/toverview/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap.min.css">
 
 		<!-- Optional theme -->
-		<link rel="stylesheet" href="/moodleNils26/report/toverview/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="/moodleNils26/report/toverview/jtable/themes/metro/lightgray/jtable.min.css">
-		<link href="/moodleNils26/report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="../../report/toverview/jtable/themes/metro/lightgray/jtable.min.css">
+		<link href="../../report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
 
 		<!-- Include one of jTable styles. -->
-		<script src="/moodleNils26/report/toverview/jtable/jquery.jtable.min.js" type="text/javascript"></script>
+		<script src="../../report/toverview/jtable/jquery.jtable.min.js" type="text/javascript"></script>
 
 		<!-- Include jTable script file. -->
 
-		<link href="/moodleNils26/report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
+		<link href="../../report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
 
-		<link rel="stylesheet" href="/../../moodleNils26/report/toverview/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap.min.css">
 
 
  
@@ -33,7 +33,7 @@
 		    	//
 		    	// Kurse: Supporter Tool einbinden
 		    	//
-    			$.get("/moodleNils26/report/toverview/template.html", function( inhalt ) {
+    			$.get("../../report/toverview/template.html", function( inhalt ) {
     				$( "#supporter" ).html(inhalt);
 				});
     		
@@ -48,7 +48,7 @@
     	        		listAction: function (postData, jtParams) {
     	        		    return $.Deferred(function ($dfd) {
     	        		        $.ajax({
-    	        		            url: '/moodleNils26/report/toverview/rest/router.php/Dateien?jtSorting=' + jtParams.jtSorting,
+    	        		            url: '../../report/toverview/rest/router.php/Dateien?jtSorting=' + jtParams.jtSorting,
     	        		            type: 'POST',
     	        		            dataType: 'json',
     	        		            data: postData,
@@ -76,7 +76,7 @@
             		    			if(!data.record.semester) {
             	    					data.record.semester = '-';
             	    				}
-            	    				return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+            	    				return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
             	    		}
 	            	    },
     	        	    fb: {
@@ -86,21 +86,21 @@
             	    			if(!data.record.fb) {
             						data.record.fb = '-';
             					}
-	        					return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+	        					return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
     	    				}
         	    	    },
             		    fullname: {
             		    	title: 'Name',
             	    		width: '20%',
             	    		display: function(data) {
-	        					return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+	        					return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
     	    				}
         	        	},
             	    	participants: {
                 			title: 'Teilnehmer',
                 			width: '5%',
                 			display: function(data) {
-	        					return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+	        					return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
     	    				}
         	        	},
             	    	folders: {
@@ -172,7 +172,7 @@
 	        	    	listAction: function (postData, jtParams) {
     	    	    	    return $.Deferred(function ($dfd) {
         		    	        $.ajax({
-        		    	            url: '/moodleNils26/report/toverview/rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
+        		    	            url: '../../report/toverview/rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
         	    		            type: 'POST',
         	    		            dataType: 'json',
         	    	    	        data: postData,
@@ -200,7 +200,7 @@
         	    	    			if(!data.record.semester) {
         	        					data.record.semester = '-';
         	        				}
-        	        				return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	        				return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
         	        		}
 	        	        },
     	    	        fb: {
@@ -210,21 +210,21 @@
         	        			if(!data.record.fb) {
         	    					data.record.fb = '-';
         	    				}
-	        					return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+	        					return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
     	    				}
         		        },
         		        fullname: {
         	    	    	title: 'Name',
         	        		width: '20%',
         	        		display: function(data) {
-	        					return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+	        					return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
     	    				}
         		        },
         		        participants: {
         	    	    	title: 'Teilnehmer',
         	        		width: '5%',
         	        		display: function(data) {
-        						return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+        						return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
 	        				}
     	    	        },
         		        forums: {
@@ -296,7 +296,7 @@
 	    		    	listAction: function (postData, jtParams) {
     			    	    return $.Deferred(function ($dfd) {
     			    	        $.ajax({
-    			    	            url: '/moodleNils26/report/toverview/rest/router.php/Tests?jtSorting=' + jtParams.jtSorting,
+    			    	            url: '../../report/toverview/rest/router.php/Tests?jtSorting=' + jtParams.jtSorting,
     		    		            type: 'POST',
     		    		            dataType: 'json',
     		    	    	        data: postData,
@@ -324,7 +324,7 @@
         	    					if(!data.record.semester) {
         	    						data.record.semester = '-';
         	    					}
-        	    					return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	    					return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
         	    			}
 	        	    	},
     	    	    	fb: {
@@ -334,21 +334,21 @@
         	    				if(!data.record.fb) {
         							data.record.fb = '-';
         						}
-	    						return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+	    						return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
     						}
         		    	},
         		    	fullname: {
         	    			title: 'Name',
         	    			width: '20%',
         	    			display: function(data) {
-    							return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+    							return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
 	    					}
     	    	    	},
         		    	participants: {
         		    		title: 'Teilnehmer',
         	    			width: '5%',
         	    			display: function(data) {
-    							return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    							return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
     						}
 	        	    	},
     	    	    	etests: {
