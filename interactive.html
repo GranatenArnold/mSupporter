@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" href="/moodleNils26/report/supporter/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="/moodleNils26/report/supporter/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/moodleNils26/report/toverview/jtable/themes/metro/lightgray/jtable.min.css">
+
+<!-- Include jTable script file. -->
+<script src="/moodleNils26/report/supporter/jtable/jquery.jtable.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    	
+    	//
+    	// Kurse: Supporter Tool einbinden
+    	//
+    	$.get("/moodleNils26/report/supporter/template.html", function( inhalt ) {
+    		$( "#supporter" ).html(inhalt);
+		});
+    	
+    	//
+    	// Dateien
+    	//
+    	$('#dateien').jtable({
+            selecting: true,
+            sorting: true,
+            defaultSorting: 'course ASC',
+            actions: {
+            	listAction: function (postData, jtParams) {
+            	    return $.Deferred(function ($dfd) {
+            	        $.ajax({
+            	            url: '/moodleNils26/report/toverview/rest/router.php/Dateien?jtSorting=' + jtParams.jtSorting,
+            	            type: 'POST',
+            	            dataType: 'json',
+            	            data: postData,
+            	            success: function (data) {
+            	                $dfd.resolve(data);
+            	            },
+            	            error: function () {
+            	                $dfd.reject();
+            	            }
+            	        });
+            	    });
+            	}
+            },
+            fields: {
+                course: {
+                	title: 'Kurs',
+                    key: true,
+                    list: true,
+                    width: '5%'
+                },
+                semester: {
+                	title: 'Semester',
+                	width: '10%',
+                	display: function(data) {
+                			if(!data.record.semester) {
+                				data.record.semester = '-';
+                			}
+                			return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+                	}
+                },
+                fb: {
+                	title: 'FB',
+                	width: '10%',
+                	display: function(data) {
+                		if(!data.record.fb) {
+            				data.record.fb = '-';
+            			}
+        				return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+        			}
+                },
+                fullname: {
+                	title: 'Name',
+                	width: '20%',
+                	display: function(data) {
+        				return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+        			}
+                },
+                participants: {
+                	title: 'Teilnehmer',
+                	width: '5%',
+                	display: function(data) {
+        				return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+        			}
+                },
+                folders: {
+                	title: 'Ordner',
+                	width: '5%'
+                },
+                files: {
+                	title: 'Dateien',
+                	width: '5%'
+                },
+                timecreated: {
+                	title: 'Erstellt',
+                	width: '5%',
+                	display: function(data) {
+                		var date = new Date(data.record.timecreated*1000);
+                		var hh = date.getUTCHours();
+                		var mm = date.getUTCMinutes();
+                		var ss = date.getSeconds();
+
+                		if (hh < 10) {hh = "0"+hh;}
+                		if (mm < 10) {mm = "0"+mm;}
+                		if (ss < 10) {ss = "0"+ss;}
+                		
+                		var day = date.getDate();
+                		var month = date.getMonth() + 1;
+                		var year = date.getFullYear();
+                		
+                		if (day < 10) {day = "0"+day;}
+                		if (month < 10) {month = "0"+month;}
+                		
+                		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+                	}
+                },
+                timemodified: {
+                	title: 'Geändert',
+                	width: '5%',
+                	display: function(data) {
+                		var date = new Date(data.record.timecreated*1000);
+                		var hh = date.getUTCHours();
+                		var mm = date.getUTCMinutes();
+                		var ss = date.getSeconds();
+
+                		if (hh < 10) {hh = "0"+hh;}
+                		if (mm < 10) {mm = "0"+mm;}
+                		if (ss < 10) {ss = "0"+ss;}
+                		
+                		var day = date.getDate();
+                		var month = date.getMonth() + 1;
+                		var year = date.getFullYear();
+                		
+                		if (day < 10) {day = "0"+day;}
+                		if (month < 10) {month = "0"+month;}
+                		
+                		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+                	}
+                }
+            
+            }
+        });
+        $('#dateien').jtable('load');
+        
+        //
+    	// Kommunikation
+    	//
+    	$('#kommunikation').jtable({
+            selecting: true,
+            sorting: true,
+            defaultSorting: 'course ASC',
+            actions: {
+            	listAction: function (postData, jtParams) {
+            	    return $.Deferred(function ($dfd) {
+            	        $.ajax({
+            	            url: '/moodleNils26/report/toverview/rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
+            	            type: 'POST',
+            	            dataType: 'json',
+            	            data: postData,
+            	            success: function (data) {
+            	                $dfd.resolve(data);
+            	            },
+            	            error: function () {
+            	                $dfd.reject();
+            	            }
+            	        });
+            	    });
+            	}
+            },
+            fields: {
+                course: {
+                	title: 'Kurs',
+                    key: true,
+                    list: true,
+                    width: '5%'
+                },
+                semester: {
+                	title: 'Semester',
+                	width: '10%',
+                	display: function(data) {
+                			if(!data.record.semester) {
+                				data.record.semester = '-';
+                			}
+                			return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+                	}
+                },
+                fb: {
+                	title: 'FB',
+                	width: '10%',
+                	display: function(data) {
+                		if(!data.record.fb) {
+            				data.record.fb = '-';
+            			}
+        				return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+        			}
+                },
+                fullname: {
+                	title: 'Name',
+                	width: '20%',
+                	display: function(data) {
+        				return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+        			}
+                },
+                participants: {
+                	title: 'Teilnehmer',
+                	width: '5%',
+                	display: function(data) {
+        				return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+        			}
+                },
+                forums: {
+                	title: 'Foren',
+                	width: '5%'
+                },
+                chats: {
+                	title: 'Chats',
+                	width: '5%'
+                },
+                timecreated: {
+                	title: 'Erstellt',
+                	width: '5%',
+                	display: function(data) {
+                		var date = new Date(data.record.timecreated*1000);
+                		var hh = date.getUTCHours();
+                		var mm = date.getUTCMinutes();
+                		var ss = date.getSeconds();
+
+                		if (hh < 10) {hh = "0"+hh;}
+                		if (mm < 10) {mm = "0"+mm;}
+                		if (ss < 10) {ss = "0"+ss;}
+                		
+                		var day = date.getDate();
+                		var month = date.getMonth() + 1;
+                		var year = date.getFullYear();
+                		
+                		if (day < 10) {day = "0"+day;}
+                		if (month < 10) {month = "0"+month;}
+                		
+                		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+                	}
+                },
+                timemodified: {
+                	title: 'Geändert',
+                	width: '5%',
+                	display: function(data) {
+                		var date = new Date(data.record.timecreated*1000);
+                		var hh = date.getUTCHours();
+                		var mm = date.getUTCMinutes();
+                		var ss = date.getSeconds();
+
+                		if (hh < 10) {hh = "0"+hh;}
+                		if (mm < 10) {mm = "0"+mm;}
+                		if (ss < 10) {ss = "0"+ss;}
+                		
+                		var day = date.getDate();
+                		var month = date.getMonth() + 1;
+                		var year = date.getFullYear();
+                		
+                		if (day < 10) {day = "0"+day;}
+                		if (month < 10) {month = "0"+month;}
+                		
+                		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+                	}
+                }
+            
+            }
+        });
+        $('#kommunikation').jtable('load');
+    
+    //
+	// Tests
+	//
+	$('#tests').jtable({
+        selecting: true,
+        sorting: true,
+        defaultSorting: 'course ASC',
+        actions: {
+        	listAction: function (postData, jtParams) {
+        	    return $.Deferred(function ($dfd) {
+        	        $.ajax({
+        	            url: '/moodleNils26/report/toverview/rest/router.php/Tests?jtSorting=' + jtParams.jtSorting,
+        	            type: 'POST',
+        	            dataType: 'json',
+        	            data: postData,
+        	            success: function (data) {
+        	                $dfd.resolve(data);
+        	            },
+        	            error: function () {
+        	                $dfd.reject();
+        	            }
+        	        });
+        	    });
+        	}
+        },
+        fields: {
+            course: {
+            	title: 'Kurs',
+                key: true,
+                list: true,
+                width: '5%'
+            },
+            semester: {
+            	title: 'Semester',
+            	width: '10%',
+            	display: function(data) {
+            			if(!data.record.semester) {
+            				data.record.semester = '-';
+            			}
+            			return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+            	}
+            },
+            fb: {
+            	title: 'FB',
+            	width: '10%',
+            	display: function(data) {
+            		if(!data.record.fb) {
+        				data.record.fb = '-';
+        			}
+    				return "<a href='/moodleNils26/course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    			}
+            },
+            fullname: {
+            	title: 'Name',
+            	width: '20%',
+            	display: function(data) {
+    				return "<a href='/moodleNils26/course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+    			}
+            },
+            participants: {
+            	title: 'Teilnehmer',
+            	width: '5%',
+            	display: function(data) {
+    				return "<a href='/moodleNils26/enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    			}
+            },
+            etests: {
+            	title: 'E-Tests',
+            	width: '5%'
+            },
+            aufgaben: {
+            	title: 'Aufgaben',
+            	width: '5%'
+            },
+            hotpot: {
+            	title: 'HotPot',
+            	width: '5%'
+            },
+            lektion: {
+            	title: 'Lektionen',
+            	width: '5%'
+            },
+            spiele: {
+            	title: 'Spiele',
+            	width: '5%'
+            },
+            timecreated: {
+            	title: 'Erstellt',
+            	width: '5%',
+            	display: function(data) {
+            		var date = new Date(data.record.timecreated*1000);
+            		var hh = date.getUTCHours();
+            		var mm = date.getUTCMinutes();
+            		var ss = date.getSeconds();
+
+            		if (hh < 10) {hh = "0"+hh;}
+            		if (mm < 10) {mm = "0"+mm;}
+            		if (ss < 10) {ss = "0"+ss;}
+            		
+            		var day = date.getDate();
+            		var month = date.getMonth() + 1;
+            		var year = date.getFullYear();
+            		
+            		if (day < 10) {day = "0"+day;}
+            		if (month < 10) {month = "0"+month;}
+            		
+            		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+            	}
+            },
+            timemodified: {
+            	title: 'Geändert',
+            	width: '5%',
+            	display: function(data) {
+            		var date = new Date(data.record.timecreated*1000);
+            		var hh = date.getUTCHours();
+            		var mm = date.getUTCMinutes();
+            		var ss = date.getSeconds();
+
+            		if (hh < 10) {hh = "0"+hh;}
+            		if (mm < 10) {mm = "0"+mm;}
+            		if (ss < 10) {ss = "0"+ss;}
+            		
+            		var day = date.getDate();
+            		var month = date.getMonth() + 1;
+            		var year = date.getFullYear();
+            		
+            		if (day < 10) {day = "0"+day;}
+            		if (month < 10) {month = "0"+month;}
+            		
+            		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+            	}
+            }
+        
+        }
+    });
+    $('#tests').jtable('load');
+});
+	
+</script>
+</head>
+<script>
+  $(function() {
+    $( "#tabs" ).tabs();
+  });
+  </script>
+<body>
+<div id="tabs">
+  <ul>
+	<li><a href="#tabs-1">Kurse</a></li>
+    <li><a href="#tabs-2">Dateien</a></li>
+    <li><a href="#tabs-3">Kommunikation</a></li>
+    <li><a href="#tabs-4">(Selbst-Überprüfung)</a></li>
+    <li><a href="#tabs-5">Kooperation</a></li>
+    <li><a href="#tabs-6">Lehrorganisation</a></li>
+    <li><a href="#tabs-7">Rückmeldungen</a></li>
+  </ul>
+  <div id="tabs-1">
+    <div id="supporter"></div>
+  </div>
+  <div id="tabs-2">
+    <div id="dateien"></div>
+  </div>
+  <div id="tabs-3">
+  	<div id="kommunikation"></div> 
+  </div>
+  <div id="tabs-4">
+  	<div id="tests"></div> 
+  </div>
+</div>
+
+</body>
+</html>
