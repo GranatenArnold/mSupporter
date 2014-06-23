@@ -94,10 +94,10 @@ function courseDetailed($id) {
 }
 
 /**
- * Gibt alle Personen zurück, die mit gegebener Rolle in einen Kurs eingetragen sind
+ * Gibt alle Personen zurÃ¼ck, die mit gegebener Rolle in einen Kurs eingetragen sind
  *
  * @param string $role
- *        	alle 'name'-Einträge in {role}, bspw. Manager, Course creator, Lehrende, Tutor, Studierende, Gast, Assistenz
+ *        	alle 'name'-EintrÃ¤ge in {role}, bspw. Manager, Course creator, Lehrende, Tutor, Studierende, Gast, Assistenz
  * @param int $course
  *        	Moodle-Kurs-ID
  */
@@ -137,7 +137,7 @@ function getModulesInCourse($course) {
 				{course_modules}.course = $course AND
 				{modules}.id = {course_modules}.module
 			GROUP BY 
-				module
+				{course_modules}.module, {modules}.name
 			";
 	return $DB->get_records_sql($sql);
 }
@@ -168,7 +168,7 @@ function getUserEnrolments($course) {
 				{user_enrolments}.enrolid = {enrol}.id AND
 				{enrol}.courseid = $course
 			GROUP BY
-				enrolid
+				enrolid, {enrol}.id,{enrol}.enrol
 			";
 	return $DB->get_records_sql($sql);
 }
