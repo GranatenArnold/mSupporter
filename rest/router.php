@@ -1,6 +1,8 @@
 <?php
 require 'Slim/Slim.php';
 require_once '../../../config.php';
+require_once($CFG->libdir.'/adminlib.php');
+admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
 \Slim\Slim::registerAutoloader ();
 
 $app = new \Slim\Slim ();
@@ -12,6 +14,9 @@ $app->map ( '/course/id/:id', 'courseDetailed' )->via ( 'GET', 'POST' );
 $app->map ( '/Dateien', 'Dateien' )->via ( 'GET', 'POST' );
 $app->map ( '/Kommunikation', 'Kommunikation' )->via ( 'GET', 'POST' );
 $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
+$app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
+$app->map ( '/Lehrorganisation', 'Lehrorganisation' )->via ( 'GET', 'POST' );
+$app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -93,13 +98,13 @@ function courseDetailed($id) {
 function Dateien() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
-	$mods = array('files', 'folders');
+	$mods = array('resource', 'folder');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 function Kommunikation() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
-	$mods = array('chats', 'forums');
+	$mods = array('chat', 'forum');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 
@@ -110,14 +115,37 @@ function Tests() {
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 
+function Kooperation() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array('wiki', 'data', 'glossary', 'workshop');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
+function Lehrorganisation() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array();
+	$additionalRows = "(SELECT COUNT(id) FROM mdl_groups WHERE courseid = mdl_course.id) AS gruppen,";
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting, $additionalRows);
+}
+
+function Rueckmeldungen() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array('choice', 'feedback', 'hotquestion');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
 /**
  * Kibt Kursliste aus, die neben allgemeinen Kursinformationen ausgibt, wie oft die angegebenen Module vorhanden sind. Sortierung nach $sortString
  * 
  * @param array $mods Alle Module, für die die Anzahl ermittelt werden soll. Bsp.: array("chat", "forum")
  * @param string $sortString Sort-String 
+ * @param string $additionalRows SQL-Abfrage als String
  * @return json $json Ausgabe-JSON
  */
-function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
+function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "", $additionalRows = "") {
 	global $DB;
 	
 	$sql = "SELECT
@@ -128,6 +156,7 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 	foreach ($mods as $mod) {
 		$sql .= "(SELECT COUNT(id) FROM mdl_course_modules WHERE mdl_course_modules.course = mdl_course.id AND module=(SELECT id FROM mdl_modules WHERE name LIKE '".$mod."')) AS ".$mod.",";
 	}
+	$sql .= $additionalRows;
 	$sql .= "
 			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
 			mdl_course.category as fbid,
@@ -145,11 +174,22 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 	$results = $DB->get_records_sql($sql);
 
 	$array = array();
+
 	foreach ($results as $key => $value) {
-		$array[] = $value;
-		/*if(!($value->etests == 0 AND $value->aufgaben == 0 AND $value->hotpot == 0 AND $value->lektion == 0 AND $value->spiele == 0)) {
+		if(!empty($mods)) {
+			$sum = 0;
+			//echo print_r($value, true);
+			foreach($mods as $mod) {
+				//echo $mod.": ".(string)$value->$mod;
+				$sum = $sum + $value->$mod;
+			}
+			if($sum > 0) {
+				$array[] = $value;
+			}
+		}
+		else {
 			$array[] = $value;
-		}*/
+		}
 	}
 	$array = array (
 			"Result" => "OK",
