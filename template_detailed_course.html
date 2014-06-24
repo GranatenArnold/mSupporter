@@ -17,12 +17,12 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div id="personen"></div>
-        						<div class="col-md-3"><div id="lehrende"></div></div>
-        						<div class="col-md-3"><div id="assistenz"></div></div>
-        						<div class="col-md-3"><div id="tutoren"></div></div>
+        						<div class="col-md-4"><div id="lehrende"></div></div>
+        						<div class="col-md-4"><div id="assistenz"></div></div>
+        						<div class="col-md-4"><div id="tutoren"></div></div>
 							</div>
 						</div>
-					
+						
 						<div id="teilnehmer"></div>
 					
 						<div class="row">
@@ -146,7 +146,7 @@
 											+ a.id
 											+ "&role=9&submitbutton=Filter'>Assistenten ("
 											+ anzahlAssistenz
-											+ "):</a></b></h4>"
+											+ "):</a></b></h5>"
 											+ Assistenz
 											+ "<br />";
 								},
@@ -168,7 +168,7 @@
 											+ a.id
 											+ "&role=4&submitbutton=Filter'>Tutoren ("
 											+ anzahlTutoren
-											+ "):</a></b></h4>"
+											+ "):</a></b></h5>"
 											+ Tutoren
 											+ "<br />";
 								},
@@ -186,7 +186,7 @@
 											+ a.id
 											+ "&role=5&submitbutton=Filter'>Teilnehmeranzahl (Studenten): "
 											+ anzahlStudenten
-											+ "</a></b></h4>"
+											+ "</a></b></h5>"
 											+ "<br />";
 								},
 								
@@ -243,7 +243,7 @@
 										}
 										
 										Methoden = Methoden
-													+ "<div class='col-md-3'>"
+													+ "<div class='col-md-4'>"
 													+ temp
 													+ methoden[key].enrol
 													+ selfPassword
