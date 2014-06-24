@@ -13,6 +13,7 @@ $app->map ( '/Dateien', 'Dateien' )->via ( 'GET', 'POST' );
 $app->map ( '/Kommunikation', 'Kommunikation' )->via ( 'GET', 'POST' );
 $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
 $app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
+$app->map ( '/Lehrorganisation', 'Lehrorganisation' )->via ( 'GET', 'POST' );
 $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
@@ -122,8 +123,9 @@ function Kooperation() {
 function Lehrorganisation() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
-	$mods = array('wiki', 'data', 'glossary', 'workshop');
-	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+	$mods = array();
+	$additionalRows = "(SELECT COUNT(id) FROM mdl_groups WHERE courseid = mdl_course.id) AS gruppen,";
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting, $additionalRows);
 }
 
 function Rueckmeldungen() {
@@ -138,9 +140,10 @@ function Rueckmeldungen() {
  * 
  * @param array $mods Alle Module, für die die Anzahl ermittelt werden soll. Bsp.: array("chat", "forum")
  * @param string $sortString Sort-String 
+ * @param string $additionalRows SQL-Abfrage als String
  * @return json $json Ausgabe-JSON
  */
-function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
+function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "", $additionalRows = "") {
 	global $DB;
 	
 	$sql = "SELECT
@@ -151,6 +154,7 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 	foreach ($mods as $mod) {
 		$sql .= "(SELECT COUNT(id) FROM mdl_course_modules WHERE mdl_course_modules.course = mdl_course.id AND module=(SELECT id FROM mdl_modules WHERE name LIKE '".$mod."')) AS ".$mod.",";
 	}
+	$sql .= $additionalRows;
 	$sql .= "
 			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
 			mdl_course.category as fbid,
@@ -168,19 +172,22 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 	$results = $DB->get_records_sql($sql);
 
 	$array = array();
+
 	foreach ($results as $key => $value) {
-		$sum = 0;
-		//echo print_r($value, true);
-		foreach($mods as $mod) {
-			//echo $mod.": ".(string)$value->$mod;
-			$sum = $sum + $value->$mod;
+		if(!empty($mods)) {
+			$sum = 0;
+			//echo print_r($value, true);
+			foreach($mods as $mod) {
+				//echo $mod.": ".(string)$value->$mod;
+				$sum = $sum + $value->$mod;
+			}
+			if($sum > 0) {
+				$array[] = $value;
+			}
 		}
-		if($sum > 0) {
+		else {
 			$array[] = $value;
 		}
-		/*if(!($value->etests == 0 AND $value->aufgaben == 0 AND $value->hotpot == 0 AND $value->lektion == 0 AND $value->spiele == 0)) {
-			$array[] = $value;
-		}*/
 	}
 	$array = array (
 			"Result" => "OK",
