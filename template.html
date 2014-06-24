@@ -61,6 +61,7 @@
     					inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
     					//console.log(inhalt);
     					$( "#getCourse" ).html(inhalt);
+    					$('body,html').animate({scrollTop:0},800);
     				});
     			});
         	});
@@ -82,7 +83,7 @@
 	        	<div id="courses"></div>
 	        </div>
 	        <div class="col-md-6">
-				<div style="position:fixed;" id = "getCourse"></div>
+				<div id = "getCourse"></div>
 	    	</div>
 		</div>
 	</body>
