@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>tOverview</title>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="../../report/toverview/jtable/themes/metro/lightgray/jtable.min.css">
+		<link href="../../report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
+
+		<!-- Include one of jTable styles. -->
+		<script src="../../report/toverview/jtable/jquery.jtable.min.js" type="text/javascript"></script>
+
+		<!-- Include jTable script file. -->
+
+		<link href="../../report/toverview/jtable/themes/metro/darkorange/jtable.min.css" rel="stylesheet" type="text/css" />
+
+		<link rel="stylesheet" href="../../report/toverview/css/bootstrap.min.css">
+
+
+ 
+
+		<script type="text/javascript">
+		    $(document).ready(function () {
+    		
+		    	//
+		    	// Kurse: Supporter Tool einbinden
+		    	//
+    			$.get("../../report/toverview/template.html", function( inhalt ) {
+    				$( "#supporter" ).html(inhalt);
+				});
+    		
+    			//
+    			// Dateien
+    			//
+    			$('#dateien').jtable({
+    	    	    selecting: true,
+    	        	sorting: true,
+    	        	defaultSorting: 'course ASC',
+    	        	actions: {
+    	        		listAction: function (postData, jtParams) {
+    	        		    return $.Deferred(function ($dfd) {
+    	        		        $.ajax({
+    	        		            url: '../../report/toverview/rest/router.php/Dateien?jtSorting=' + jtParams.jtSorting,
+    	        		            type: 'POST',
+    	        		            dataType: 'json',
+    	        		            data: postData,
+    	        		            success: function (data) {
+    	        		                $dfd.resolve(data);
+    	        		            },
+    	        		            error: function () {
+    	        		                $dfd.reject();
+    	        		            }
+    	        		        });
+    	        		    });
+    	        		}
+    	        	},
+    	        	fields: {
+    	        	    course: {
+    	        	    	title: 'Kurs',
+    	        	        key: true,
+    	        	        list: true,
+    	        	        width: '5%'
+    	        	    },
+    	        	    semester: {
+    	        	    	title: 'Semester',
+        	    	    	width: '10%',
+            		    	display: function(data) {
+            		    			if(!data.record.semester) {
+            	    					data.record.semester = '-';
+            	    				}
+            	    				return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+            	    		}
+	            	    },
+    	        	    fb: {
+        	    	    	title: 'FB',
+            		    	width: '10%',
+            		    	display: function(data) {
+            	    			if(!data.record.fb) {
+            						data.record.fb = '-';
+            					}
+	        					return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    	    				}
+        	    	    },
+            		    fullname: {
+            		    	title: 'Name',
+            	    		width: '20%',
+            	    		display: function(data) {
+	        					return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+    	    				}
+        	        	},
+            	    	participants: {
+                			title: 'Teilnehmer',
+                			width: '5%',
+                			display: function(data) {
+	        					return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    	    				}
+        	        	},
+            	    	folders: {
+                			title: 'Ordner',
+                			width: '5%'
+                		},
+	                	files: {
+    	            		title: 'Dateien',
+        	        		width: '5%'
+            	    	},
+                		timecreated: {
+                			title: 'Erstellt',
+                			width: '5%',
+	                		display: function(data) {
+    	            			var date = new Date(data.record.timecreated*1000);
+        	        			var hh = date.getUTCHours();
+            	    			var mm = date.getUTCMinutes();
+                				var ss = date.getSeconds();
+		
+	    	            		if (hh < 10) {hh = "0"+hh;}
+    	    	        		if (mm < 10) {mm = "0"+mm;}
+        	    	    		if (ss < 10) {ss = "0"+ss;}
+            	    			
+                				var day = date.getDate();
+                				var month = date.getMonth() + 1;
+	                			var year = date.getFullYear();
+    	            			
+        	        			if (day < 10) {day = "0"+day;}
+            	    			if (month < 10) {month = "0"+month;}
+                				
+                				return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+                			}	
+                		},
+	                	timemodified: {
+    	            		title: 'Geändert',
+        	        		width: '5%',
+            	    		display: function(data) {
+                				var date = new Date(data.record.timecreated*1000);
+                				var hh = date.getUTCHours();
+                				var mm = date.getUTCMinutes();
+                				var ss = date.getSeconds();
+		
+		                		if (hh < 10) {hh = "0"+hh;}
+	    	            		if (mm < 10) {mm = "0"+mm;}
+	        	        		if (ss < 10) {ss = "0"+ss;}
+	            	    		
+	                			var day = date.getDate();
+	                			var month = date.getMonth() + 1;
+	                			var year = date.getFullYear();
+		                		
+		                		if (day < 10) {day = "0"+day;}
+	    	            		if (month < 10) {month = "0"+month;}
+	        	        		
+	            	    		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+	                		}
+	                	}
+	            	}
+		        });
+		        $('#dateien').jtable('load');
+	    	    
+        		//
+    			// Kommunikation
+    			//
+	    		$('#kommunikation').jtable({
+    	    	    selecting: true,
+        		    sorting: true,
+        		    defaultSorting: 'course ASC',
+        	    	actions: {
+	        	    	listAction: function (postData, jtParams) {
+    	    	    	    return $.Deferred(function ($dfd) {
+        		    	        $.ajax({
+        		    	            url: '../../report/toverview/rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
+        	    		            type: 'POST',
+        	    		            dataType: 'json',
+        	    	    	        data: postData,
+        	    	        	    success: function (data) {
+        	    	            	    $dfd.resolve(data);
+        	    	            	},
+	        	    	            error: function () {
+    	    	    	                $dfd.reject();
+        		    	            }
+        		    	        });
+        	    		    });
+        	    		}
+        	    	},
+	        	    fields: {
+    	    	        course: {
+        		        	title: 'Kurs',
+        		            key: true,
+        	    	        list: true,
+        	        	    width: '5%'
+        	        	},
+	        	        semester: {
+    	    	        	title: 'Semester',
+        		        	width: '10%',
+        		        	display: function(data) {
+        	    	    			if(!data.record.semester) {
+        	        					data.record.semester = '-';
+        	        				}
+        	        				return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	        		}
+	        	        },
+    	    	        fb: {
+        		        	title: 'FB',
+        		        	width: '10%',
+        	    	    	display: function(data) {
+        	        			if(!data.record.fb) {
+        	    					data.record.fb = '-';
+        	    				}
+	        					return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    	    				}
+        		        },
+        		        fullname: {
+        	    	    	title: 'Name',
+        	        		width: '20%',
+        	        		display: function(data) {
+	        					return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+    	    				}
+        		        },
+        		        participants: {
+        	    	    	title: 'Teilnehmer',
+        	        		width: '5%',
+        	        		display: function(data) {
+        						return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+	        				}
+    	    	        },
+        		        forums: {
+        		        	title: 'Foren',
+        	    	    	width: '5%'
+        	        	},
+	        	        chats: {
+	        	        	title: 'Chats',
+    	    	        	width: '5%'
+        		        },
+	        	        timecreated: {
+    	    	        	title: 'Erstellt',
+        		        	width: '5%',
+        		        	display: function(data) {
+        	    	    		var date = new Date(data.record.timecreated*1000);
+        	        			var hh = date.getUTCHours();
+        	        			var mm = date.getUTCMinutes();
+        	        			var ss = date.getSeconds();
+		
+		                		if (hh < 10) {hh = "0"+hh;}
+	    	            		if (mm < 10) {mm = "0"+mm;}
+	        	        		if (ss < 10) {ss = "0"+ss;}
+	            	    		
+	                			var day = date.getDate();
+	                			var month = date.getMonth() + 1;
+	                			var year = date.getFullYear();
+		                		
+		                		if (day < 10) {day = "0"+day;}
+	    	            		if (month < 10) {month = "0"+month;}
+	        	        		
+	            	    		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+	                		}
+	                	},
+		                timemodified: {
+		                	title: 'Geändert',
+	    	            	width: '5%',
+	        	        	display: function(data) {
+	            	    		var date = new Date(data.record.timecreated*1000);
+	                			var hh = date.getUTCHours();
+	                			var mm = date.getUTCMinutes();
+	                			var ss = date.getSeconds();
+		
+		                		if (hh < 10) {hh = "0"+hh;}
+	    	            		if (mm < 10) {mm = "0"+mm;}
+	        	        		if (ss < 10) {ss = "0"+ss;}
+		        	        		
+    	            			var day = date.getDate();
+        	        			var month = date.getMonth() + 1;
+            	    			var year = date.getFullYear();
+	                			
+    	            			if (day < 10) {day = "0"+day;}
+        	        			if (month < 10) {month = "0"+month;}
+            	    			
+	            	    		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+    	            		}
+	        	        }
+    	        	}
+	        	});	
+	        	$('#kommunikation').jtable('load');
+    		
+    			//
+				// Tests
+				//
+				$('#tests').jtable({
+    			    selecting: true,
+    			    sorting: true,
+    			    defaultSorting: 'course ASC',
+    		    	actions: {
+	    		    	listAction: function (postData, jtParams) {
+    			    	    return $.Deferred(function ($dfd) {
+    			    	        $.ajax({
+    			    	            url: '../../report/toverview/rest/router.php/Tests?jtSorting=' + jtParams.jtSorting,
+    		    		            type: 'POST',
+    		    		            dataType: 'json',
+    		    	    	        data: postData,
+    		    	        	    success: function (data) {
+    		    	            	    $dfd.resolve(data);
+    		    	            	},
+	    		    	            error: function () {
+    			    	                $dfd.reject();
+    			    	            }
+    			    	        });
+    		    		    });
+    		    		}
+	    		    },
+    			    fields: {
+    			        course: {
+    			        	title: 'Kurs',
+    		    	    	key: true,
+        	        		list: true,
+        	        		width: '5%'
+	        	    	},
+    	    	    	semester: {
+        		    		title: 'Semester',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    					if(!data.record.semester) {
+        	    						data.record.semester = '-';
+        	    					}
+        	    					return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	    			}
+	        	    	},
+    	    	    	fb: {
+        		    		title: 'FB',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    				if(!data.record.fb) {
+        							data.record.fb = '-';
+        						}
+	    						return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    						}
+        		    	},
+        		    	fullname: {
+        	    			title: 'Name',
+        	    			width: '20%',
+        	    			display: function(data) {
+    							return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+	    					}
+    	    	    	},
+        		    	participants: {
+        		    		title: 'Teilnehmer',
+        	    			width: '5%',
+        	    			display: function(data) {
+    							return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    						}
+	        	    	},
+    	    	    	quiz: {
+        		    		title: 'E-Tests',
+        		    		width: '5%'
+        	    		},
+        	    		assign: {
+        	    			title: 'Aufgaben',
+	        	    		width: '5%'
+	        	    	},
+	        	    	hotpot: {
+    	    	    		title: 'HotPot',
+        		    		width: '5%'
+        		    	},
+        	    		lesson: {
+        	    			title: 'Lektionen',
+        	    			width: '5%'
+	        	    	},	
+    	    	    	games: {
+        		    		title: 'Spiele',
+        		    		width: '5%'
+        	    		},
+        	    		timecreated: {
+        	    			title: 'Erstellt',
+        	    			width: '5%',
+	        	    		display: function(data) {
+		    	         		var date = new Date(data.record.timecreated*1000);
+		    	        		var hh = date.getUTCHours();
+		    	        		var mm = date.getUTCMinutes();
+	    		        		var ss = date.getSeconds();
+			
+		    	        		if (hh < 10) {hh = "0"+hh;}
+		        	    		if (mm < 10) {mm = "0"+mm;}
+		            			if (ss < 10) {ss = "0"+ss;}
+		            			
+		            			var day = date.getDate();
+			            		var month = date.getMonth() + 1;
+			            		var year = date.getFullYear();
+			            		
+		    	        		if (day < 10) {day = "0"+day;}
+		        	    		if (month < 10) {month = "0"+month;}
+		            			
+		            			return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+		            		}
+		            	},
+			            timemodified: {
+			            	title: 'Geändert',
+			            	width: '5%',
+		    	        	display: function(data) {
+		        	    		var date = new Date(data.record.timecreated*1000);
+		            			var hh = date.getUTCHours();
+		            			var mm = date.getUTCMinutes();
+		            			var ss = date.getSeconds();
+		
+			            		if (hh < 10) {hh = "0"+hh;}
+			            		if (mm < 10) {mm = "0"+mm;}
+			            		if (ss < 10) {ss = "0"+ss;}
+    	    	    		
+    		    	    		var day = date.getDate();
+    		        			var month = date.getMonth() + 1;
+    		        			var year = date.getFullYear();
+    		        			
+	    		        		if (day < 10) {day = "0"+day;}
+    			        		if (month < 10) {month = "0"+month;}
+    			        		
+    			        		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+    		    	    	}
+		            	}
+    		    	}
+			    });
+    			$('#tests').jtable('load');
+			});
+		</script>
+	</head>
+
+	<body>
+		<script>
+		$(function() {
+	    	$( "#tabs" ).tabs();
+	    });
+		</script>
+		
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Kurse</a></li>
+		    	<li><a href="#tabs-2">Dateien</a></li>
+		    	<li><a href="#tabs-3">Kommunikation</a></li>
+		    	<li><a href="#tabs-4">(Selbst-Überprüfung)</a></li>
+		    	<li><a href="#tabs-5">Kooperation</a></li>
+		    	<li><a href="#tabs-6">Lehrorganisation</a></li>
+				<li><a href="#tabs-7">Rückmeldungen</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="supporter"></div>
+			</div>
+			<div id="tabs-2">
+				<div id="dateien"></div>
+			</div>
+			<div id="tabs-3">
+				<div id="kommunikation"></div> 
+			</div>
+			<div id="tabs-4">
+				<div id="tests"></div> 
+			</div>
+		</div>
+	</body>
+</html>
