@@ -12,6 +12,8 @@ $app->map ( '/course/id/:id', 'courseDetailed' )->via ( 'GET', 'POST' );
 $app->map ( '/Dateien', 'Dateien' )->via ( 'GET', 'POST' );
 $app->map ( '/Kommunikation', 'Kommunikation' )->via ( 'GET', 'POST' );
 $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
+$app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
+$app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -93,13 +95,13 @@ function courseDetailed($id) {
 function Dateien() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
-	$mods = array('files', 'folders');
+	$mods = array('resource', 'folder');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 function Kommunikation() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
-	$mods = array('chats', 'forums');
+	$mods = array('chat', 'forum');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 
@@ -107,6 +109,27 @@ function Tests() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
 	$mods = array('quiz', 'assign', 'hotpot', 'lesson', 'games');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
+function Kooperation() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array('wiki', 'data', 'glossary', 'workshop');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
+function Lehrorganisation() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array('wiki', 'data', 'glossary', 'workshop');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
+function Rueckmeldungen() {
+	$app = \Slim\Slim::getInstance ();
+	$jtSorting = $app->request->get('jtSorting');
+	$mods = array('choice', 'feedback', 'hotquestion');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 
@@ -146,7 +169,15 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 
 	$array = array();
 	foreach ($results as $key => $value) {
-		$array[] = $value;
+		$sum = 0;
+		//echo print_r($value, true);
+		foreach($mods as $mod) {
+			//echo $mod.": ".(string)$value->$mod;
+			$sum = $sum + $value->$mod;
+		}
+		if($sum > 0) {
+			$array[] = $value;
+		}
 		/*if(!($value->etests == 0 AND $value->aufgaben == 0 AND $value->hotpot == 0 AND $value->lektion == 0 AND $value->spiele == 0)) {
 			$array[] = $value;
 		}*/

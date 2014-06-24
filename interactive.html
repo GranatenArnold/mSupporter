@@ -103,11 +103,11 @@
 	        					return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
     	    				}
         	        	},
-            	    	folders: {
+            	    	folder: {
                 			title: 'Ordner',
                 			width: '5%'
                 		},
-	                	files: {
+	                	resource: {
     	            		title: 'Dateien',
         	        		width: '5%'
             	    	},
@@ -227,11 +227,11 @@
         						return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
 	        				}
     	    	        },
-        		        forums: {
+        		        forum: {
         		        	title: 'Foren',
         	    	    	width: '5%'
         	        	},
-	        	        chats: {
+	        	        chat: {
 	        	        	title: 'Chats',
     	    	        	width: '5%'
         		        },
@@ -420,6 +420,266 @@
     		    	}
 			    });
     			$('#tests').jtable('load');
+    			
+    			//
+				// Kooperation
+				//
+				$('#koop').jtable({
+    			    selecting: true,
+    			    sorting: true,
+    			    defaultSorting: 'course ASC',
+    		    	actions: {
+	    		    	listAction: function (postData, jtParams) {
+    			    	    return $.Deferred(function ($dfd) {
+    			    	        $.ajax({
+    			    	            url: '../../report/toverview/rest/router.php/Kooperation?jtSorting=' + jtParams.jtSorting,
+    		    		            type: 'POST',
+    		    		            dataType: 'json',
+    		    	    	        data: postData,
+    		    	        	    success: function (data) {
+    		    	            	    $dfd.resolve(data);
+    		    	            	},
+	    		    	            error: function () {
+    			    	                $dfd.reject();
+    			    	            }
+    			    	        });
+    		    		    });
+    		    		}
+	    		    },
+    			    fields: {
+    			        course: {
+    			        	title: 'Kurs',
+    		    	    	key: true,
+        	        		list: true,
+        	        		width: '5%'
+	        	    	},
+    	    	    	semester: {
+        		    		title: 'Semester',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    					if(!data.record.semester) {
+        	    						data.record.semester = '-';
+        	    					}
+        	    					return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	    			}
+	        	    	},
+    	    	    	fb: {
+        		    		title: 'FB',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    				if(!data.record.fb) {
+        							data.record.fb = '-';
+        						}
+	    						return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    						}
+        		    	},
+        		    	fullname: {
+        	    			title: 'Name',
+        	    			width: '20%',
+        	    			display: function(data) {
+    							return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+	    					}
+    	    	    	},
+        		    	participants: {
+        		    		title: 'Teilnehmer',
+        	    			width: '5%',
+        	    			display: function(data) {
+    							return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    						}
+	        	    	},
+    	    	    	wiki: {
+        		    		title: 'Wikis',
+        		    		width: '5%'
+        	    		},
+        	    		data: {
+        	    			title: 'Datenbanken',
+	        	    		width: '5%'
+	        	    	},
+	        	    	glossary: {
+    	    	    		title: 'Glossare',
+        		    		width: '5%'
+        		    	},
+        	    		workshop: {
+        	    			title: 'Workshop',
+        	    			width: '5%'
+	        	    	},	
+        	    		timecreated: {
+        	    			title: 'Erstellt',
+        	    			width: '5%',
+	        	    		display: function(data) {
+		    	         		var date = new Date(data.record.timecreated*1000);
+		    	        		var hh = date.getUTCHours();
+		    	        		var mm = date.getUTCMinutes();
+	    		        		var ss = date.getSeconds();
+			
+		    	        		if (hh < 10) {hh = "0"+hh;}
+		        	    		if (mm < 10) {mm = "0"+mm;}
+		            			if (ss < 10) {ss = "0"+ss;}
+		            			
+		            			var day = date.getDate();
+			            		var month = date.getMonth() + 1;
+			            		var year = date.getFullYear();
+			            		
+		    	        		if (day < 10) {day = "0"+day;}
+		        	    		if (month < 10) {month = "0"+month;}
+		            			
+		            			return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+		            		}
+		            	},
+			            timemodified: {
+			            	title: 'Geändert',
+			            	width: '5%',
+		    	        	display: function(data) {
+		        	    		var date = new Date(data.record.timecreated*1000);
+		            			var hh = date.getUTCHours();
+		            			var mm = date.getUTCMinutes();
+		            			var ss = date.getSeconds();
+		
+			            		if (hh < 10) {hh = "0"+hh;}
+			            		if (mm < 10) {mm = "0"+mm;}
+			            		if (ss < 10) {ss = "0"+ss;}
+    	    	    		
+    		    	    		var day = date.getDate();
+    		        			var month = date.getMonth() + 1;
+    		        			var year = date.getFullYear();
+    		        			
+	    		        		if (day < 10) {day = "0"+day;}
+    			        		if (month < 10) {month = "0"+month;}
+    			        		
+    			        		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+    		    	    	}
+		            	}
+    		    	}
+			    });
+    			$('#koop').jtable('load');
+    			
+    			//
+				// Rückmeldungen
+				//
+				$('#rueckmeldungen').jtable({
+    			    selecting: true,
+    			    sorting: true,
+    			    defaultSorting: 'course ASC',
+    		    	actions: {
+	    		    	listAction: function (postData, jtParams) {
+    			    	    return $.Deferred(function ($dfd) {
+    			    	        $.ajax({
+    			    	            url: '../../report/toverview/rest/router.php/Rueckmeldungen?jtSorting=' + jtParams.jtSorting,
+    		    		            type: 'POST',
+    		    		            dataType: 'json',
+    		    	    	        data: postData,
+    		    	        	    success: function (data) {
+    		    	            	    $dfd.resolve(data);
+    		    	            	},
+	    		    	            error: function () {
+    			    	                $dfd.reject();
+    			    	            }
+    			    	        });
+    		    		    });
+    		    		}
+	    		    },
+    			    fields: {
+    			        course: {
+    			        	title: 'Kurs',
+    		    	    	key: true,
+        	        		list: true,
+        	        		width: '5%'
+	        	    	},
+    	    	    	semester: {
+        		    		title: 'Semester',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    					if(!data.record.semester) {
+        	    						data.record.semester = '-';
+        	    					}
+        	    					return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	    			}
+	        	    	},
+    	    	    	fb: {
+        		    		title: 'FB',
+        		    		width: '10%',
+        	    			display: function(data) {
+        	    				if(!data.record.fb) {
+        							data.record.fb = '-';
+        						}
+	    						return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+    						}
+        		    	},
+        		    	fullname: {
+        	    			title: 'Name',
+        	    			width: '20%',
+        	    			display: function(data) {
+    							return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+	    					}
+    	    	    	},
+        		    	participants: {
+        		    		title: 'Teilnehmer',
+        	    			width: '5%',
+        	    			display: function(data) {
+    							return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+    						}
+	        	    	},
+    	    	    	choice: {
+        		    		title: 'Abstimmung',
+        		    		width: '5%'
+        	    		},
+        	    		feedback: {
+        	    			title: 'Feedback',
+	        	    		width: '5%'
+	        	    	},
+	        	    	hotquestion: {
+    	    	    		title: 'Nachgefragt',
+        		    		width: '5%'
+        		    	},
+        	    		timecreated: {
+        	    			title: 'Erstellt',
+        	    			width: '5%',
+	        	    		display: function(data) {
+		    	         		var date = new Date(data.record.timecreated*1000);
+		    	        		var hh = date.getUTCHours();
+		    	        		var mm = date.getUTCMinutes();
+	    		        		var ss = date.getSeconds();
+			
+		    	        		if (hh < 10) {hh = "0"+hh;}
+		        	    		if (mm < 10) {mm = "0"+mm;}
+		            			if (ss < 10) {ss = "0"+ss;}
+		            			
+		            			var day = date.getDate();
+			            		var month = date.getMonth() + 1;
+			            		var year = date.getFullYear();
+			            		
+		    	        		if (day < 10) {day = "0"+day;}
+		        	    		if (month < 10) {month = "0"+month;}
+		            			
+		            			return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+		            		}
+		            	},
+			            timemodified: {
+			            	title: 'Geändert',
+			            	width: '5%',
+		    	        	display: function(data) {
+		        	    		var date = new Date(data.record.timecreated*1000);
+		            			var hh = date.getUTCHours();
+		            			var mm = date.getUTCMinutes();
+		            			var ss = date.getSeconds();
+		
+			            		if (hh < 10) {hh = "0"+hh;}
+			            		if (mm < 10) {mm = "0"+mm;}
+			            		if (ss < 10) {ss = "0"+ss;}
+    	    	    		
+    		    	    		var day = date.getDate();
+    		        			var month = date.getMonth() + 1;
+    		        			var year = date.getFullYear();
+    		        			
+	    		        		if (day < 10) {day = "0"+day;}
+    			        		if (month < 10) {month = "0"+month;}
+    			        		
+    			        		return day + "." + month + "." + year + " " + hh + ":" + mm + ":" + ss;
+    		    	    	}
+		            	}
+    		    	}
+			    });
+    			$('#rueckmeldungen').jtable('load');
 			});
 		</script>
 	</head>
@@ -452,6 +712,15 @@
 			</div>
 			<div id="tabs-4">
 				<div id="tests"></div> 
+			</div>
+			<div id="tabs-5">
+				<div id="koop"></div>
+			</div>
+			<div id="tabs-5">
+				<div id="lehrorganisation"></div>
+			</div>
+			<div id="tabs-7">
+				<div id="rueckmeldungen"></div>
 			</div>
 		</div>
 	</body>
