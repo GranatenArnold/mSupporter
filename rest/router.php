@@ -1,8 +1,8 @@
 <?php
 require 'Slim/Slim.php';
 require_once '../../../config.php';
-require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
+//require_once($CFG->libdir.'/adminlib.php');
+//admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
 \Slim\Slim::registerAutoloader ();
 
 $app = new \Slim\Slim ();
