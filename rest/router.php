@@ -24,24 +24,18 @@ function course() {
 	global $DB;
 	
 	$sql = "SELECT
-		mdl_course.id,
-		mdl_course.fullname,
-		mdl_course.category as fbID,
-		(SELECT name FROM mdl_course_categories WHERE id=mdl_course.category) as fb,
-		(SELECT parent FROM mdl_course_categories WHERE id=mdl_course.category) as semesterID,
-		(SELECT name FROM mdl_course_categories WHERE id=(SELECT parent FROM mdl_course_categories WHERE id=mdl_course.category)) as semester
-	FROM mdl_course ";
+		{course}.id,
+		{course}.fullname,
+		{course}.category as fbID,
+		(SELECT name FROM {course_categories} WHERE id={course}.category) as fb,
+		(SELECT parent FROM {course_categories} WHERE id={course}.category) as semesterID,
+		(SELECT name FROM {course_categories} WHERE id=(SELECT parent FROM {course_categories} WHERE id={course}.category)) as semester
+	FROM {course} ";
 	if($query) {
 		$name = str_replace ( ' ', '%', $query );
 		$sql .= " WHERE {course}.fullname LIKE '%" . $name . "%' OR {course}.shortname LIKE '%" . $name . "%'";
 	}
 	$result = $DB->get_records_sql($sql);
-	/*
-	foreach ( $result as $key => $value ) {
-		$array [] = $value;
-	}
-	*/
-	//$sum = count ( $array );
 	$array = array (
 			"Result" => "OK",
 			"Records" => $result
@@ -201,7 +195,7 @@ function Lehrorganisation() {
 	$app = \Slim\Slim::getInstance ();
 	$jtSorting = $app->request->get('jtSorting');
 	$mods = array();
-	$additionalRows = "(SELECT COUNT(id) FROM mdl_groups WHERE courseid = mdl_course.id) AS gruppen,";
+	$additionalRows = "(SELECT COUNT(id) FROM {groups} WHERE courseid = {course}.id) AS gruppen,";
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting, $additionalRows);
 }
 
@@ -224,23 +218,23 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "", $addition
 	global $DB;
 	
 	$sql = "SELECT
-			mdl_course.id as course,
-			mdl_course.fullname,
-			mdl_course.timecreated as timecreated,
-			mdl_course.timemodified as timemodified,";
+			{course}.id as course,
+			{course}.fullname,
+			{course}.timecreated as timecreated,
+			{course}.timemodified as timemodified,";
 	foreach ($mods as $mod) {
-		$sql .= "(SELECT COUNT(id) FROM mdl_course_modules WHERE mdl_course_modules.course = mdl_course.id AND module=(SELECT id FROM mdl_modules WHERE name LIKE '".$mod."')) AS ".$mod.",";
+		$sql .= "(SELECT COUNT(id) FROM {course_modules} WHERE {course_modules}.course = {course}.id AND module=(SELECT id FROM {modules} WHERE name LIKE '".$mod."')) AS ".$mod.",";
 	}
 	$sql .= $additionalRows;
 	$sql .= "
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
-			mdl_course.category as fbid,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category)
+			(SELECT {course_categories}.name FROM {course_categories} WHERE {course_categories}.id={course}.category) AS fb,
+			{course}.category as fbid,
+			(SELECT {course_categories}.name FROM {course_categories} WHERE {course_categories}.id=
+			(SELECT {course_categories}.parent FROM {course_categories} WHERE {course_categories}.id={course}.category)
 			) as semester,
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) as semesterid,
-			(SELECT COUNT(id) FROM mdl_user_enrolments WHERE enrolid IN (SELECT mdl_enrol.id FROM mdl_enrol WHERE mdl_enrol.courseid=mdl_course.id)) as participants
-			FROM mdl_course
+			(SELECT {course_categories}.parent FROM {course_categories} WHERE {course_categories}.id={course}.category) as semesterid,
+			(SELECT COUNT(id) FROM {user_enrolments} WHERE enrolid IN (SELECT {enrol}.id FROM {enrol} WHERE {enrol}.courseid={course}.id)) as participants
+			FROM {course}
 				";
 	if($sortString) {
 		$sql .= " ORDER BY ".$sortString;
