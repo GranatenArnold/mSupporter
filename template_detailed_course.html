@@ -115,7 +115,7 @@
 									var LehrendeArray = new Array();
 									var Lehrende = "";
 									for (key in lehrende) {
-										Lehrende = Lehrende + "<a href= '../../user/profile.php?id=" + lehrende[key].userid + "'>"
+										Lehrende = Lehrende + "<a href= '../../user/profile.php?id=" + lehrende[key].userid + "'>- "
 												+ lehrende[key].firstname + " " + lehrende[key].lastname + "</a><br />";
 										LehrendeArray.push(lehrende[key].lastname);
 									}
@@ -136,7 +136,7 @@
 									var AssistenzArray = new Array();
 									var Assistenz = "";
 									for (key in assistenz) {
-										Assistenz = Assistenz + "<a href= '../../user/profile.php?id=" + assistenz[key].userid + "'>"
+										Assistenz = Assistenz + "<a href= '../../user/profile.php?id=" + assistenz[key].userid + "'>- "
 												+ assistenz[key].firstname + " " + assistenz[key].lastname + "</a><br />";
 										AssistenzArray.push(assistenz[key].lastname);
 									}
@@ -158,7 +158,7 @@
 									var Tutoren = "";
 									for (key in tutoren) {
 										Tutoren = Tutoren
-												+ "<a href= '../../user/profile.php?id=" + tutoren[key].userid + "'>"
+												+ "<a href= '../../user/profile.php?id=" + tutoren[key].userid + "'>- "
 												+ tutoren[key].firstname + " " + tutoren[key].lastname + "</a><br />";
 										TutorenArray.push(tutoren[key].lastname);
 									}
