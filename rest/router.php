@@ -91,78 +91,16 @@ function courseDetailed($id) {
 	echo json_encode ( $array );
 }
 function Dateien() {
-	global $DB;
 	$app = \Slim\Slim::getInstance ();
-	$sql = "SELECT
-			mdl_course.id as course,
-			mdl_course.fullname,
-			mdl_course.timecreated as timecreated,
-			mdl_course.timemodified as timemodified,
-			(SELECT COUNT(mdl_folder.id) FROM mdl_folder WHERE mdl_folder.course=mdl_course.id) AS folders,
-			(SELECT COUNT(mdl_resource.id) FROM mdl_resource WHERE mdl_resource.course=mdl_course.id) AS files,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
-			mdl_course.category as fbid,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category)
-			) as semester,
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) as semesterid,
-			(SELECT COUNT(id) FROM mdl_user_enrolments WHERE enrolid IN (SELECT mdl_enrol.id FROM mdl_enrol WHERE mdl_enrol.courseid=mdl_course.id)) as participants
-			FROM mdl_course";
 	$jtSorting = $app->request->get('jtSorting');
-	if($jtSorting) {
-		$sql .= " ORDER BY ".$jtSorting;
-	}
-	
-	$results = $DB->get_records_sql($sql);
-	
-	$array = array();
-	foreach ($results as $key => $value) {
-		if(!($value->files == 0 AND $value->folders == 0)) {
-			$array[] = $value;
-		}
-	}
-	$array = array (
-			"Result" => "OK",
-			"Records" => $array
-	);
-	echo json_encode($array);
+	$mods = array('files', 'folders');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 function Kommunikation() {
-	global $DB;
 	$app = \Slim\Slim::getInstance ();
-	$sql = "SELECT
-			mdl_course.id as course,
-			mdl_course.fullname,
-			mdl_course.timecreated as timecreated,
-			mdl_course.timemodified as timemodified,
-			(SELECT COUNT(id) FROM mdl_course_modules WHERE mdl_course_modules.course = mdl_course.id AND module=(SELECT id FROM mdl_modules WHERE name LIKE 'forum')) AS forums,
-			(SELECT COUNT(id) FROM mdl_course_modules WHERE mdl_course_modules.course = mdl_course.id AND module=(SELECT id FROM mdl_modules WHERE name LIKE 'chat')) AS chats,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
-			mdl_course.category as fbid,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category)
-			) as semester,
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) as semesterid,
-			(SELECT COUNT(id) FROM mdl_user_enrolments WHERE enrolid IN (SELECT mdl_enrol.id FROM mdl_enrol WHERE mdl_enrol.courseid=mdl_course.id)) as participants
-			FROM mdl_course";
 	$jtSorting = $app->request->get('jtSorting');
-	if($jtSorting) {
-		$sql .= " ORDER BY ".$jtSorting;
-	}
-
-	$results = $DB->get_records_sql($sql);
-
-	$array = array();
-	foreach ($results as $key => $value) {
-		if(!($value->chats == 0 AND $value->forums == 0)) {
-			$array[] = $value;
-		}
-	}
-	$array = array (
-			"Result" => "OK",
-			"Records" => $array
-	);
-	echo json_encode($array);
+	$mods = array('chats', 'forums');
+	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
 }
 
 function Tests() {
@@ -199,12 +137,11 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "") {
 			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) as semesterid,
 			(SELECT COUNT(id) FROM mdl_user_enrolments WHERE enrolid IN (SELECT mdl_enrol.id FROM mdl_enrol WHERE mdl_enrol.courseid=mdl_course.id)) as participants
 			FROM mdl_course
-			WHERE 
 				";
 	if($sortString) {
 		$sql .= " ORDER BY ".$sortString;
 	}
-
+	//echo "<pre>".print_r($sql, true)."</pre>";
 	$results = $DB->get_records_sql($sql);
 
 	$array = array();
