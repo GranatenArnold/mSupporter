@@ -20,40 +20,31 @@ $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
-	global $DB;
-	$fields = '{course}.id,{course}.category,{course}.fullname,{course}.shortname,{course}.idnumber,{course}.format,{course}.visible,{course}.timecreated,{course}.timemodified';
-	$sql = "SELECT " . $fields . " FROM {course}";
 	$query = $app->request->get ( 'query' );
-	if (! empty ( $query )) {
+	global $DB;
+	
+	$sql = "SELECT
+		mdl_course.id,
+		mdl_course.fullname,
+		mdl_course.category as fbID,
+		(SELECT name FROM mdl_course_categories WHERE id=mdl_course.category) as fb,
+		(SELECT parent FROM mdl_course_categories WHERE id=mdl_course.category) as semesterID,
+		(SELECT name FROM mdl_course_categories WHERE id=(SELECT parent FROM mdl_course_categories WHERE id=mdl_course.category)) as semester
+	FROM mdl_course ";
+	if($query) {
 		$name = str_replace ( ' ', '%', $query );
 		$sql .= " WHERE {course}.fullname LIKE '%" . $name . "%' OR {course}.shortname LIKE '%" . $name . "%'";
 	}
-	$result = $DB->get_records_sql ( $sql );
-	
-	$categories = $DB->get_records ( 'course_categories', array (), null, 'id,name,parent' );
-	// echo "<pre>".print_r($categories, true)."</pre>";
-	$array = array ();
+	$result = $DB->get_records_sql($sql);
+	/*
 	foreach ( $result as $key => $value ) {
-		if ($value->category == 0) {
-			$value->fbID = false;
-			$value->semesterID = false;
-		} else {
-			$value->fbID = $value->category;
-			$value->fb = $categories [$value->fbID]->name;
-			$value->semesterID = $categories [$value->fbID]->parent;
-		}
-		
-		if ($value->semesterID == 0) {
-			$value->semester = false;
-		} else {
-			$value->semester = $categories [$value->semesterID]->name;
-		}
 		$array [] = $value;
 	}
-	$sum = count ( $array );
+	*/
+	//$sum = count ( $array );
 	$array = array (
 			"Result" => "OK",
-			"Records" => $array 
+			"Records" => $result
 	);
 	// echo "<pre>".print_r($result, true)."</pre>";
 	echo json_encode ( $array );
@@ -96,7 +87,6 @@ function courseDetailed($id) {
 	$array[0]->UserEnrolments = getUserEnrolments($id);
 	
 	//echo "<pre>" . print_r ( $array, true ) . "</pre>";
-	
 	$array = array("Result" => "OK", "Records" => $array ); echo json_encode($array);
 	 
 }
