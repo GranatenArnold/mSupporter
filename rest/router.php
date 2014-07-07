@@ -53,8 +53,12 @@ $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
 $app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
 $app->map ( '/Lehrorganisation', 'Lehrorganisation' )->via ( 'GET', 'POST' );
 $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
+<<<<<<< HEAD
 $app->map ( '/user/(:identifier)', 'user' )->via ( 'GET', 'POST' );
 $app->map ( '/user/id/:id', 'userDetailed' )->via ( 'GET', 'POST');
+=======
+$app->map ( '/Category(/:id)', 'Category' )->via ( 'GET', 'POST' );
+>>>>>>> 7d38c918df11bca702d14aac30e0c6a2ed7c98b3
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -82,6 +86,10 @@ function course() {
 	echo json_encode ( $array );
 }
 function courseDetailed($id) {
+	if($id == "undefined") {
+		echo "NOT A COURSE ID!";
+		die;
+	}
 	global $DB;
 	$result = $DB->get_records ( 'course', array (
 			'id' => $id 
@@ -242,6 +250,65 @@ function Rueckmeldungen() {
 	$jtSorting = $app->request->get('jtSorting');
 	$mods = array('choice', 'feedback', 'hotquestion');
 	echo GetTableOfCoursesWithAmountOfModules($mods, $jtSorting);
+}
+
+function Category($id = 0) {
+	GLOBAL $DB;
+	$sql = "SELECT 
+				c.id as Sem,
+				c.name,
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id
+				) +
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
+					mdl_course.category 
+					IN
+					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id)
+				)	AS kursegesamt,
+				
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id AND mdl_course.idnumber != ''
+				) +
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
+					mdl_course.category 
+					IN
+					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id) AND mdl_course.idnumber != ''
+				)	AS schnittstelle,
+				
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id AND mdl_course.idnumber = ''
+				) +
+				(
+					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
+					mdl_course.category 
+					IN
+					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id) AND mdl_course.idnumber = ''
+				)	AS manuell
+				
+			FROM 
+				mdl_course_categories c
+			WHERE
+				parent = ".$id." AND
+				id != 1
+			ORDER BY
+				c.timemodified ASC";
+	$categories = $DB->get_records_sql($sql);
+	$manuell = 0;
+	$schnittstelle = 0;
+	$gesamt = 0;
+	foreach ($categories as $id => $category) {
+		$manuell += $category->manuell;
+		$schnittstelle += $category->schnittstelle;
+		$gesamt += $category->kursegesamt;
+	}
+	$array['subcategories'] = $categories;
+	$array['manuell'] = $manuell;
+	$array['schnittstelle'] = $schnittstelle;
+	$array['gesamt'] = $gesamt;
+	//echo "<pre>".print_r($array, true)."</pre>";
+	echo json_encode($array);
 }
 
 /**

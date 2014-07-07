@@ -167,7 +167,7 @@
 	                	}
 	            	}
 		        });
-		        
+    			
 	    	    
         		//
     			// Kommunikation
@@ -805,6 +805,13 @@
     		    	}
 			    });
     			
+				$('#dateien').jtable('load');
+				$('#rueckmeldungen').jtable('load');
+				$('#tests').jtable('load');
+				$('#koop').jtable('load');
+				$('#kommunikation').jtable('load');
+				$('#lehrorganisation').jtable('load');
+    			
         		jQuery(document.body).on('click', '.jtable-data-row', function() {
         			var curTab = $(".ui-tabs-active");
         			var curTabIndex = curTab.index();
@@ -831,6 +838,7 @@
 		<div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Kurse</a></li>
+				<li><a href="#tabs-stats">Statistiken</a>
 		    	<li><a id="linkDateien" href="#tabs-2">Dateien</a></li>
 		    	<li><a id="linkKommunikation" href="#tabs-3">Kommunikation</a></li>
 		    	<li><a id="linkTests" href="#tabs-4">(Selbst-Überprüfung)</a></li>
@@ -860,30 +868,97 @@
 			<div id="tabs-7">
 				<div id="rueckmeldungen"></div>
 			</div>
+<<<<<<< HEAD
 			<div id="tabs-8">
 				<div id="supporterUser"></div>
+=======
+			<div id="tabs-stats">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>Seite</h3>
+					</div>
+					<div class="panel-body">
+					<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+				    <script type="text/javascript">
+				
+				      // Load the Visualization API and the piechart package.
+				      google.load('visualization', '1.0', {'packages':['corechart']});
+				
+				      // Set a callback to run when the Google Visualization API is loaded.
+				      google.setOnLoadCallback(
+				    		  $.ajax({
+				    			  url: "/report/toverview/rest/router.php/Category",
+				    			  dataType: 'json',
+				    			}).done(function(data) {
+				    			  drawChart(data);
+				    			})
+				      );
+				
+				      // Callback that creates and populates a data table,
+				      // instantiates the pie chart, passes in the data and
+				      // draws it.
+				      function drawChart(jsondata) {
+						
+				        // Create the data table.
+				        var data = new google.visualization.DataTable();
+				        data.addColumn('string', 'Topping');
+				        data.addColumn('number', 'Slices');
+				        //var rows = 
+				        var array = new Array();
+				        var cats = jsondata.subcategories;
+				        
+				        jQuery.each(cats, function() {
+				        	name = this.name;
+				        	kursegesamt = parseInt(this.kursegesamt);
+				        	var array = new Array(name, kursegesamt);
+				        	console.log(array);
+				        	//array.push(new Array(name, kursegesamt));
+				        	data.addRow(array);
+				        });
+				        //console.log(array);
+				        
+				        //data.addRows(array);
+				        /*
+				        data.addRows([
+				          ['Mushrooms', 3],
+				          ['Onions', 1],
+				          ['Olives', 1],
+				          ['Zucchini', 1],
+				          ['Pepperoni', 2]
+				        ]);
+						*/
+				        // Set chart options
+				        var options = {'title':'Semester',
+				                       'width':800,
+				                       'height':600};
+				
+				        // Instantiate and draw our chart, passing in some options.
+				        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+				        chart.draw(data, options);
+				      }
+				    </script>
+				    	<div id='chart_div'></div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>Semester</h3>
+						
+					</div>
+					<div class="panel-body">
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>Fachbereich</h3>
+					</div>
+					<div class="panel-body">
+					</div>
+				</div>
+>>>>>>> 7d38c918df11bca702d14aac30e0c6a2ed7c98b3
 			</div>
 		</div>
 		<script>
-		$("#linkDateien").mousedown(function() {
-			$('#dateien').jtable('load');
-		});
-		$("#linkLehrorganisation").mousedown(function() {
-			$('#lehrorganisation').jtable('load');
-		});
-		$("#linkRueckmeldungen").mousedown(function() {
-			$('#rueckmeldungen').jtable('load');
-		});
-		$("#linkTests").mousedown(function() {
-			$('#tests').jtable('load');
-		});
-		$("#linkKooperation").mousedown(function() {
-			$('#koop').jtable('load');
-		});
-		$("#linkKommunikation").mousedown(function() {
-			$('#kommunikation').jtable('load');
-		});
-    	
 		</script>
 	</body>
 </html>
