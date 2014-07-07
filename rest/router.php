@@ -53,12 +53,9 @@ $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
 $app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
 $app->map ( '/Lehrorganisation', 'Lehrorganisation' )->via ( 'GET', 'POST' );
 $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
-<<<<<<< HEAD
 $app->map ( '/user/(:identifier)', 'user' )->via ( 'GET', 'POST' );
 $app->map ( '/user/id/:id', 'userDetailed' )->via ( 'GET', 'POST');
-=======
 $app->map ( '/Category(/:id)', 'Category' )->via ( 'GET', 'POST' );
->>>>>>> 7d38c918df11bca702d14aac30e0c6a2ed7c98b3
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -258,37 +255,37 @@ function Category($id = 0) {
 				c.id as Sem,
 				c.name,
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id
+					SELECT COUNT({course}.id) FROM {course} WHERE {course}.category = c.id
 				) +
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
-					mdl_course.category 
+					SELECT COUNT({course}.id) FROM {course} WHERE 
+					{course}.category 
 					IN
-					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id)
+					(SELECT k.id FROM {course_categories} k WHERE k.parent = c.id)
 				)	AS kursegesamt,
 				
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id AND mdl_course.idnumber != ''
+					SELECT COUNT({course}.id) FROM {course} WHERE {course}.category = c.id AND {course}.idnumber != ''
 				) +
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
-					mdl_course.category 
+					SELECT COUNT({course}.id) FROM {course} WHERE 
+					{course}.category 
 					IN
-					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id) AND mdl_course.idnumber != ''
+					(SELECT k.id FROM {course_categories} k WHERE k.parent = c.id) AND {course}.idnumber != ''
 				)	AS schnittstelle,
 				
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE mdl_course.category = c.id AND mdl_course.idnumber = ''
+					SELECT COUNT({course}.id) FROM {course} WHERE {course}.category = c.id AND {course}.idnumber = ''
 				) +
 				(
-					SELECT COUNT(mdl_course.id) FROM mdl_course WHERE 
-					mdl_course.category 
+					SELECT COUNT({course}.id) FROM {course} WHERE 
+					{course}.category 
 					IN
-					(SELECT k.id FROM mdl_course_categories k WHERE k.parent = c.id) AND mdl_course.idnumber = ''
+					(SELECT k.id FROM {course}_categories k WHERE k.parent = c.id) AND {course}.idnumber = ''
 				)	AS manuell
 				
 			FROM 
-				mdl_course_categories c
+				{course_categories} c
 			WHERE
 				parent = ".$id." AND
 				id != 1
