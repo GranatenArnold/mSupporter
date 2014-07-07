@@ -53,6 +53,8 @@ $app->map ( '/Tests', 'Tests' )->via ( 'GET', 'POST' );
 $app->map ( '/Kooperation', 'Kooperation' )->via ( 'GET', 'POST' );
 $app->map ( '/Lehrorganisation', 'Lehrorganisation' )->via ( 'GET', 'POST' );
 $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
+$app->map ( '/user/(:identifier)', 'user' )->via ( 'GET', 'POST' );
+$app->map ( '/user/id/:id', 'userDetailed' )->via ( 'GET', 'POST');
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -303,5 +305,48 @@ function GetTableOfCoursesWithAmountOfModules($mods, $sortString = "", $addition
 	);
 	return json_encode($array);
 }
+
+function user() {
+	$app = \Slim\Slim::getInstance ();
+	$query = $app->request->get ( 'query' );
+	global $DB;
+
+	$sql = "SELECT
+		{user}.id,
+		{user}.username,
+		{user}.firstname,
+		{user}.lastname,
+		{user}.email,
+		{user}.lang
+	FROM {user} ";
+	
+	if($query) {
+		$name = str_replace ( ' ', '%', $query );
+		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%'";
+	}
+	
+	$result = $DB->get_records_sql($sql);
+	$array = array (
+			"Result" => "OK",
+			"Records" => $result
+	);
+	// echo "<pre>".print_r($result, true)."</pre>";
+	echo json_encode ( $array );
+}
+
+function userDetailed($id) {
+	global $DB;
+	$result = $DB->get_records ( 'user', array (
+			'id' => $id
+	) );
+	$array = array ();
+	foreach ( $result as $key => $value ) {
+		$array [] = $value;
+	}
+	// echo "<pre>".print_r($array, true)."</pre>";
+	
+	$array = array("Result" => "OK", "Records" => $array ); echo json_encode($array);
+}
+
 
 ?>
