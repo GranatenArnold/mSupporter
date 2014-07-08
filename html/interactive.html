@@ -28,6 +28,9 @@
 		
 		<!-- Include Pure Engine -->
 		<script src="/report/toverview/js/pure.js"></script>
+		<script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1","packages":["corechart","controls","table"]}]}'></script>
+		
+		<script src='/report/toverview/js/tabelle.js'></script>
 
 		<!-- Hier wird die Tabelle initiiert -->
 		<script type="text/javascript">
@@ -84,7 +87,7 @@
 				
 				
 				//
-				// Tab: RÃ¼ckmeldungen
+				// Tab: RÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼ckmeldungen
 				//
 				$.get("/report/toverview/html/tabs/rueckmeldungen.html", function ( inhalt ) {
 					$( "#rueckmeldungen" ).html(inhalt);
@@ -100,7 +103,7 @@
 	    		
 				
 	    		//
-	    		// Bei Klick auf eine Zeile Ã¶ffnet sich automatisch der erste Tab ("Kurse"), auÃŸer, wenn im Tab "Nutzer/innen" auf eine Zeile geklickt wird.
+	    		// Bei Klick auf eine Zeile ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶ffnet sich automatisch der erste Tab ("Kurse"), auÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸er, wenn im Tab "Nutzer/innen" auf eine Zeile geklickt wird.
 	    		// In dem Fall bleibt das Tab aktiv.
 	    		// Die Tab ID des Nutzer Tabs muss angepasst werden, falls weitere Tabs dazu kommen (Momentan ist die Tab ID: 1)
 	    		//
@@ -133,10 +136,10 @@
 				<li><a href="#tabs-stats">Statistiken</a>
 		    	<li><a href="#tabs-3">Dateien</a></li>
 		    	<li><a href="#tabs-4">Kommunikation</a></li>
-		    	<li><a href="#tabs-5">(Selbst-ÃœberprÃ¼fung)</a></li>
+		    	<li><a href="#tabs-5">Selbst-&Uuml;berpr&uuml;fung</a></li>
 		    	<li><a href="#tabs-6">Kooperation</a></li>
 		    	<li><a href="#tabs-7">Lehrorganisation</a></li>
-				<li><a href="#tabs-8">RÃ¼ckmeldungen</a></li>
+				<li><a href="#tabs-8">R&uuml;ckmeldungen</a></li>
 			</ul>
 			<div id="tabs-1">
 				<div id="kurse"></div>
@@ -168,66 +171,7 @@
 						<h3>Seite</h3>
 					</div>
 					<div class="panel-body">
-					<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-				    <script type="text/javascript">
-				
-				      // Load the Visualization API and the piechart package.
-				      google.load('visualization', '1.0', {'packages':['corechart']});
-				
-				      // Set a callback to run when the Google Visualization API is loaded.
-				      google.setOnLoadCallback(
-				    		  $.ajax({
-				    			  url: "/report/toverview/rest/router.php/Category",
-				    			  dataType: 'json',
-				    			}).done(function(data) {
-				    			  drawChart(data);
-				    			})
-				      );
-				
-				      // Callback that creates and populates a data table,
-				      // instantiates the pie chart, passes in the data and
-				      // draws it.
-				      function drawChart(jsondata) {
-						
-				        // Create the data table.
-				        var data = new google.visualization.DataTable();
-				        data.addColumn('string', 'Topping');
-				        data.addColumn('number', 'Slices');
-				        //var rows = 
-				        var array = new Array();
-				        var cats = jsondata.subcategories;
-				        
-				        jQuery.each(cats, function() {
-				        	name = this.name;
-				        	kursegesamt = parseInt(this.kursegesamt);
-				        	var array = new Array(name, kursegesamt);
-				        	console.log(array);
-				        	//array.push(new Array(name, kursegesamt));
-				        	data.addRow(array);
-				        });
-				        //console.log(array);
-				        
-				        //data.addRows(array);
-				        /*
-				        data.addRows([
-				          ['Mushrooms', 3],
-				          ['Onions', 1],
-				          ['Olives', 1],
-				          ['Zucchini', 1],
-				          ['Pepperoni', 2]
-				        ]);
-						*/
-				        // Set chart options
-				        var options = {'title':'Semester',
-				                       'width':800,
-				                       'height':600};
-				
-				        // Instantiate and draw our chart, passing in some options.
-				        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-				        chart.draw(data, options);
-				      }
-				    </script>
-				    	<div id='chart_div'></div>
+					
 					</div>
 				</div>
 				<div class="panel panel-default">

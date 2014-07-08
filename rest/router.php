@@ -380,14 +380,13 @@ function user() {
 				{user}.username,
 				{user}.firstname,
 				{user}.lastname,
-				{user}.email,
-				{user}.lang
+				{user}.email
 			FROM {user}
 			";
 	
 	if($query) {
 		$name = str_replace ( ' ', '%', $query );
-		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%'";
+		$sql .= " WHERE ({user}.firstname + {user}.lastname) LIKE '%" . $name . "%' OR {user}.username LIKE '%" . $name . "%' OR {user}.email LIKE '%" . $name . "%'";
 	}
 	
 	$result = $DB->get_records_sql($sql);

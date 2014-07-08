@@ -2,29 +2,11 @@
  * 
  */
 
-function tabelle() {
-
-	this.sorting = 'course ASC';
-	this.baseURL = '../../report/toverview/rest/router.php';
-	this.URL = '/irgendwas';
-	this.fields = []; // [[Spaltenname, Beschriftung]] Bsp.:
-	// [['timecreated', 'Erstellt'], ['course', 'Kurs']]
-
-	this.zeichnen = function(divID, fields) {
-		google.load('visualization', '1', {
-			packages : [ 'table' ]
-		});
-		google.setOnLoadCallback(drawTable);
-		function drawTable() {
-			
-			/*
-			$.each(fields, function(spalte, eigenschaften) {
-				data.addRow('boolean', eigenschaften.bezeichnung);
-			});
-			*/
+function tabelle(divID, fields, url) {
+			console.log('/report/toverview/rest/router.php' + url);
 			$.ajax({
-				fields : this.fields,
-	            url: '../../report/toverview/rest/router.php/Dateien', //?jtSorting=' + jtParams.jtSorting,
+				fields : fields,
+	            url: '/report/toverview/rest/router.php' + url,
 	            type: 'POST',
 	            dataType: 'json',
     	        //data: postData,
@@ -37,19 +19,22 @@ function tabelle() {
         			data.addColumn('string', 'Semester');
         			data.addColumn('string', 'FB');
         			data.addColumn('string', 'Name');
+        			data.addColumn('number', 'Teilnehmer');
         			$.each(fields, function(spalte, eigenschaften) {
         				data.addColumn(eigenschaften.typ, eigenschaften.bezeichnung);
         			});
+        			data.addColumn('datetime', 'Erstellt');
+        			data.addColumn('datetime', 'Geändert');
         	    	result = result.Records;
         	    	var array = new Array();
         	    	$.each(result, function(id, felder) {
-        	    		console.log(felder);
+        	    		//console.log(felder);
         	    		var subarray = new Array();
         	    		subarray.push(parseInt(felder.course));
         	    		subarray.push(felder.semester);
         	    		subarray.push(felder.fb);
         	    		subarray.push(felder.fullname);
-        	    		
+        	    		subarray.push(parseInt(felder.participants));
         	    		$.each(fields, function(spalte, eigenschaften) {
         	    			if(eigenschaften.typ == "number") {
         	    				subarray.push(parseInt(felder[spalte]));
@@ -60,6 +45,8 @@ function tabelle() {
         	    			//array.push(felder[spalte]);
         					//data.addColumn('boolean', eigenschaften.bezeichnung);
         				});
+        	    		subarray.push(new Date(felder.timecreated*1000));
+        	    		subarray.push(new Date(felder.timemodified*1000));
         	    		array.push(subarray);
         	    		//data.addRow(array);
         				//data.addRow('boolean', eigenschaften.bezeichnung);
@@ -68,16 +55,12 @@ function tabelle() {
             	    var table = new google.visualization.Table(document
         					.getElementById(divID));
         			table.draw(data, {
-        				showRowNumber : true
+        				showRowNumber : false
         			});
             	},
-	            error: function () {
+	            error: function (data) {
+	            	console.log(data);
 	                alert("Ajax-Call fehlgeschlagen!");
 	            }
 	        });
-			
-			
-		}
-		;
-	};
 };
