@@ -20,7 +20,7 @@ $loader = '<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		    	//
 		    	// Kurse: Supporter Tool einbinden
 		    	//
-    			$.get("html/interactive.html", function( inhalt ) {
+    			$.get("../../report/toverview/html/interactive.html", function( inhalt ) {
     				$( "#content" ).html(inhalt);
 				});
 			});

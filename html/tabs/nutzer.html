@@ -11,7 +11,7 @@
         	   	 		listAction: function (postData, jtParams) {
         	    	    	return $.Deferred(function ($dfd) {
         	    	        	$.ajax({
-        	    	            	url: '../rest/router.php/user/',
+        	    	            	url: '/report/toverview/rest/router.php/user/',
         	    	            	type: 'GET',
         	    	            	dataType: 'json',
         	    	            	data: postData,
@@ -59,7 +59,7 @@
         		});
         		
         		jQuery(document.body).on('click', 'tr', function(event) {
-    				$.get("../html/detailed_user_view.html", function( inhalt ) {
+    				$.get("/report/toverview/html/detailed_user_view.html", function( inhalt ) {
     					var x = $(event.currentTarget);
     					//console.log(x.attr('data-record-key'));
     					inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
