@@ -1,4 +1,4 @@
- $(document).ready(function () {
+			$(document).ready(function () {
     			
 		    	// Tab Inhalte als eigene html in die Tabelle laden:
 		    	
