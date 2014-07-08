@@ -375,7 +375,7 @@ function user() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 
-	$sql = "SELECT
+	$sql = "SELECT TOP 100
 				{user}.id,
 				{user}.username,
 				{user}.firstname,
@@ -387,10 +387,7 @@ function user() {
 	
 	if($query) {
 		$name = str_replace ( ' ', '%', $query );
-		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%' LIMIT 100";
-	}
-	else {
-		$sql .= " LIMIT 100";
+		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%'";
 	}
 	
 	$result = $DB->get_records_sql($sql);
