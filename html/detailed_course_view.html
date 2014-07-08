@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="../../report/toverview/js/pure.js"></script>
+		
 	</head>
 	
 	<body>
@@ -44,7 +44,7 @@
 		<script>
 			$
 				.ajax({
-					url : "../../report/toverview/rest/router.php/course/id/#ID#",
+					url : "rest/router.php/course/id/#ID#",
 					context : document.body
 				})
 				.done(
@@ -59,7 +59,7 @@
 									var fb = a.fb;
 									var courseID = a.id;
 									var shortname = a.shortname;
-									var imgLink = "<img width='30px' src='../../report/toverview/pix/"
+									var imgLink = "<img width='30px' src='pix/"
 										if (a.visible == 1) {
 											imgLink = imgLink + "show.png";
 										} else {
@@ -121,7 +121,7 @@
 									}
 									var anzahlLehrende = LehrendeArray.length;
 									
-									return "<h5><b><a href='../../enrol/users.php?id="
+									return "<h5><b><a href='../enrol/users.php?id="
 											+ a.id
 											+ "&role=3&submitbutton=Filter'>Lehrende ("
 											+ anzahlLehrende
@@ -213,7 +213,7 @@
 									a = a.context;
 									var methoden = a.Einschreibemethoden;
 									var Methoden = "";
-									var imgLink = "<img width='20px' src='../../report/toverview/pix/";
+									var imgLink = "<img width='20px' src='pix/";
 									var temp = "";
 									var selfPassword = "";
 									var enrolments = a.UserEnrolments;

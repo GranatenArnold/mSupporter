@@ -11,7 +11,7 @@
 	    		    	listAction: function (postData, jtParams) {
     			    	    return $.Deferred(function ($dfd) {
     			    	        $.ajax({
-    			    	            url: '../../report/toverview/rest/router.php/Kooperation?jtSorting=' + jtParams.jtSorting,
+    			    	            url: 'rest/router.php/Kooperation?jtSorting=' + jtParams.jtSorting,
     		    		            type: 'POST',
     		    		            dataType: 'json',
     		    	    	        data: postData,
