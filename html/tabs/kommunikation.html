@@ -11,7 +11,7 @@
 	        	    	listAction: function (postData, jtParams) {
     	    	    	    return $.Deferred(function ($dfd) {
         		    	        $.ajax({
-        		    	            url: 'rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
+        		    	            url: '../rest/router.php/Kommunikation?jtSorting=' + jtParams.jtSorting,
         	    		            type: 'POST',
         	    		            dataType: 'json',
         	    	    	        data: postData,
@@ -39,7 +39,7 @@
         	    	    			if(!data.record.semester) {
         	        					data.record.semester = '-';
         	        				}
-        	        				return "<a href='../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
+        	        				return "<a href='../../../course/index.php?categoryid=" + data.record.semesterid + "'>" + data.record.semester + "</a>";
         	        		}
 	        	        },
     	    	        fb: {
@@ -49,21 +49,21 @@
         	        			if(!data.record.fb) {
         	    					data.record.fb = '-';
         	    				}
-	        					return "<a href='../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
+	        					return "<a href='../../../course/index.php?categoryid=" + data.record.fbid + "'>" + data.record.fb + "</a>";
     	    				}
         		        },
         		        fullname: {
         	    	    	title: 'Name',
         	        		width: '20%',
         	        		display: function(data) {
-        	        			return "<a href='../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
+        	        			return "<a href='../../../course/view.php?id=" + data.record.course + "'>" + data.record.fullname + "</a>";
     	    				}
         		        },
         		        participants: {
         	    	    	title: 'Teilnehmer',
         	        		width: '5%',
         	        		display: function(data) {
-        						return "<a href='../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
+        						return "<a href='../../../enrol/users.php?id=" + data.record.course + "'>" + data.record.participants + "</a>";
 	        				}
     	    	        },
         		        forum: {

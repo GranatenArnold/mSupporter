@@ -24,7 +24,7 @@
 		<script>
 			$
 				.ajax({
-					url : "rest/router.php/user/id/#ID#",
+					url : "../rest/router.php/user/id/#ID#",
 					context : document.body
 				})
 				.done(
@@ -36,7 +36,7 @@
 									var userID = a.id;
 									var vorname = a.firstname;
 									var nachname = a.lastname;
-									var userLink = "<a href='../../user/profile.php?id=" + userID + "'>" + vorname
+									var userLink = "<a href='../../../user/profile.php?id=" + userID + "'>" + vorname
 											+ " " + nachname + "</a>";
 									
 									return userLink;
