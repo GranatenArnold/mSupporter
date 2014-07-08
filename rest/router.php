@@ -376,17 +376,21 @@ function user() {
 	global $DB;
 
 	$sql = "SELECT
-		{user}.id,
-		{user}.username,
-		{user}.firstname,
-		{user}.lastname,
-		{user}.email,
-		{user}.lang
-	FROM {user} ";
+				{user}.id,
+				{user}.username,
+				{user}.firstname,
+				{user}.lastname,
+				{user}.email,
+				{user}.lang
+			FROM {user}
+			";
 	
 	if($query) {
 		$name = str_replace ( ' ', '%', $query );
-		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%'";
+		$sql .= " WHERE {user}.firstname LIKE '%" . $name . "%' OR {user}.lastname LIKE '%" . $name . "%' LIMIT 100";
+	}
+	else {
+		$sql .= " LIMIT 100";
 	}
 	
 	$result = $DB->get_records_sql($sql);
