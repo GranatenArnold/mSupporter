@@ -382,7 +382,7 @@ function user() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 
-	$sql = "SELECT TOP 30
+	$sql = "SELECT TOP 20
 				{user}.id,
 				{user}.username,
 				{user}.firstname,
@@ -393,7 +393,13 @@ function user() {
 	
 	if($query) {
 		$name = str_replace ( ' ', '%', $query );
-		$sql .= " WHERE ({user}.firstname + {user}.lastname) LIKE '%" . $name . "%' OR {user}.username LIKE '%" . $name . "%' OR {user}.email LIKE '%" . $name . "%'";
+		if(strpos($name,"%")!==false) {
+			$sql .= " WHERE ({user}.firstname + {user}.lastname) LIKE '%" . $name . "%'";
+		}
+		else {
+			$sql .= " WHERE ({user}.firstname + {user}.lastname) LIKE '%" . $name . "%' OR {user}.username LIKE '%" . $name . "%'";
+		}
+		
 	}
 	
 	$result = $DB->get_records_sql($sql);
@@ -407,16 +413,49 @@ function user() {
 
 function userDetailed($id) {
 	global $DB;
-	$result = $DB->get_records ( 'user', array (
-			'id' => $id
-	) );
-	$array = array ();
-	foreach ( $result as $key => $value ) {
-		$array [] = $value;
-	}
-	// echo "<pre>".print_r($array, true)."</pre>";
+	$sql = "SELECT
+				id,
+				auth,
+				username,
+				firstname, 
+				lastname,
+				email,
+				lang,
+				firstaccess,
+				lastaccess,
+				lastlogin,
+				currentlogin,
+				lastip,
+				timecreated,
+				timemodified
+			FROM {user} WHERE id=".$id;
 	
-	$array = array("Result" => "OK", "Records" => $array ); echo json_encode($array);
+	$result = $DB->get_records_sql($sql);
+	
+	$sql = "SELECT
+			mdl_role_assignments.id,
+			mdl_role_assignments.roleid,
+			mdl_context.instanceid as course,
+			mdl_role.name,
+			mdl_course.category as fbid,
+			mdl_course.fullname,
+			mdl_course.shortname,
+			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE id=mdl_course.category) as fb,
+			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE id=mdl_course.category) as semesterid,
+			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE id=(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE id=mdl_course.category)) as semester
+			FROM mdl_role_assignments, mdl_context, mdl_role, mdl_course
+			WHERE
+			userid=".$id." AND
+			mdl_context.id = mdl_role_assignments.contextid AND
+			mdl_context.contextlevel=50 AND 
+			mdl_role_assignments.roleid = mdl_role.id AND
+			mdl_course.id = mdl_context.instanceid";
+	$result[$id]->roles = $DB->get_records_sql($sql);
+	
+	
+	echo "<pre>".print_r($result, true)."</pre>";
+	
+	//$array = array("Result" => "OK", "Records" => $array ); echo json_encode($array);
 }
 
 
