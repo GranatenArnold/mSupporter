@@ -87,7 +87,7 @@
 				
 				
 				//
-				// Tab: RÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼ckmeldungen
+				// Tab: RÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ckmeldungen
 				//
 				$.get("/report/toverview/html/tabs/rueckmeldungen.html", function ( inhalt ) {
 					$( "#rueckmeldungen" ).html(inhalt);
@@ -103,7 +103,7 @@
 	    		
 				
 	    		//
-	    		// Bei Klick auf eine Zeile ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶ffnet sich automatisch der erste Tab ("Kurse"), auÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸er, wenn im Tab "Nutzer/innen" auf eine Zeile geklickt wird.
+	    		// Bei Klick auf eine Zeile ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶ffnet sich automatisch der erste Tab ("Kurse"), auÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸er, wenn im Tab "Nutzer/innen" auf eine Zeile geklickt wird.
 	    		// In dem Fall bleibt das Tab aktiv.
 	    		// Die Tab ID des Nutzer Tabs muss angepasst werden, falls weitere Tabs dazu kommen (Momentan ist die Tab ID: 1)
 	    		//
@@ -133,7 +133,6 @@
 			<ul>
 				<li><a href="#tabs-1">Kurse</a></li>
 				<li><a href="#tabs-2">Nutzer/innen</a></li>
-				<li><a href="#tabs-stats">Statistiken</a>
 		    	<li><a href="#tabs-3">Dateien</a></li>
 		    	<li><a href="#tabs-4">Kommunikation</a></li>
 		    	<li><a href="#tabs-5">Selbst-&Uuml;berpr&uuml;fung</a></li>
@@ -164,31 +163,6 @@
 			</div>
 			<div id="tabs-8">
 				<div id="rueckmeldungen"></div>
-			</div>
-			<div id="tabs-stats">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3>Seite</h3>
-					</div>
-					<div class="panel-body">
-					
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3>Semester</h3>
-						
-					</div>
-					<div class="panel-body">
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3>Fachbereich</h3>
-					</div>
-					<div class="panel-body">
-					</div>
-				</div>
 			</div>
 		</div>
 		<script>

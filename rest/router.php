@@ -62,7 +62,7 @@ function course() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 	
-	$sql = "SELECT
+	$sql = "SELECT TOP 30
 		{course}.id,
 		{course}.fullname,
 		{course}.category as fbID,
@@ -375,7 +375,7 @@ function user() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 
-	$sql = "SELECT TOP 100
+	$sql = "SELECT TOP 30
 				{user}.id,
 				{user}.username,
 				{user}.firstname,
