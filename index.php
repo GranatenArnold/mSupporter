@@ -12,7 +12,6 @@ global $OUTPUT;
 
 
 $context = context_system::instance();
-//echo "<pre>".print_r($context, true)."</pre>";
 require_capability('report/toverview:view', $context);
 
 echo '<script type="text/javascript">

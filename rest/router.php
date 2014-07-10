@@ -4,10 +4,17 @@ require_once '../../../config.php';
 //require_once($CFG->libdir.'/adminlib.php');
 //admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
 
+$context = context_system::instance();
+require_capability('report/toverview:view', $context);
+/*
+
 function Rechtepruefung() {
 	GLOBAL $CFG;
 	require_once($CFG->libdir.'/adminlib.php');
-	admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
+	$context = context_system::instance();
+	require_capability('report/toverview:view', $context);
+	
+	//admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
 	$hash = hash('sha256', microtime());
 	$_SESSION['tOverview_TOKEN'] = $hash;
 	global $DB;
@@ -37,7 +44,7 @@ else {
 		Rechtepruefung();
 	}	
 }
-
+*/
 
 \Slim\Slim::registerAutoloader ();
 
