@@ -6,9 +6,10 @@
 		
 			function KurstabelleZeichnen(suchstring) {
 				$.ajax({
-					url: "https://mdl-alpha.un.hrz.tu-darmstadt.de/report/toverview/rest/router.php/course/?query=" + suchstring,
+					url: "/report/toverview/rest/router.php/course/?query=" + suchstring,
 					dataType: 'json',
 				}).done(function (result) {
+					// Create and populate the data table.
 					var data = new google.visualization.DataTable();
 					data.addColumn('number', 'ID');
 			        data.addColumn('string', 'Semester');
@@ -30,12 +31,27 @@
         				array.push(subarray);
         			});
         	    	data.addRows(array);
+        	    	
+        	    	// Create and draw the visualization.
 			        var table = new google.visualization.Table(document.getElementById('courses'));
 			        table.draw(data, {showRowNumber: false});
-			        google.visualization.events.addListener(table, 'select', function() {
-			        	console.log(table.getSelection());
-			        });
 			        
+			        // Setup listener
+			        google.visualization.events.addListener(table, 'select', selectHandler);
+			        
+			        // Select Handler. Call the table's getSelection() method
+			        function selectHandler() {
+			        	var selection = table.getSelection();
+			        	//alert("That's row " + data.getValue(selection[0].row, 0))
+			        	$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
+	    					var x = data.getValue(selection[0].row, 0);
+	    					//console.log(x);
+	    					inhalt = inhalt.replace(/#ID#/g, x);
+	    					//console.log(inhalt);
+	    					$( "#getCourse" ).html(inhalt);
+	    					$('body,html').animate({scrollTop:0},800);
+			        	})
+			        }   
 				});
 			}
 			
@@ -43,23 +59,6 @@
     			$( "#search" ).keyup(function() {
 				  KurstabelleZeichnen($( this ).val());
 				});
-				
-			
-				
-			
-				
-				
-				
-        		jQuery(document.body).on('click', 'tr', function(event) {
-    				$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
-    					var x = $(event.currentTarget);
-    					//console.log(x.attr('data-record-key'));
-    					inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
-    					//console.log(inhalt);
-    					$( "#getCourse" ).html(inhalt);
-    					$('body,html').animate({scrollTop:0},800);
-    				});
-    			});
         	});
 		</script>
 	</head>
