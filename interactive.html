@@ -35,7 +35,7 @@
 				$.get("../../report/toverview/template.html", function(inhalt) {
 					$("#supporter").html(inhalt);
 				});
-
+				/*
 				//
 				// Dateien
 				//
@@ -144,7 +144,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -287,7 +287,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -442,7 +442,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -593,7 +593,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -629,7 +629,7 @@
 				});
 
 				//
-				// Rückmeldungen
+				// RÃ¼ckmeldungen
 				//
 				$('#rueckmeldungen').jtable({
 					selecting : true,
@@ -740,7 +740,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -879,7 +879,7 @@
 							}
 						},
 						timemodified : {
-							title : 'Geändert',
+							title : 'GeÃ¤ndert',
 							width : '5%',
 							display : function(data) {
 								var date = new Date(data.record.timecreated * 1000);
@@ -1021,7 +1021,7 @@
                 			}	
                 		},
 	                	timemodified: {
-    	            		title: 'GeÃ¤ndert',
+    	            		title: 'GeÃƒÂ¤ndert',
         	        		width: '5%',
             	    		display: function(data) {
                 				var date = new Date(data.record.timecreated*1000);
@@ -1145,7 +1145,7 @@
 	                		}
 	                	},
 		                timemodified: {
-		                	title: 'GeÃ¤ndert',
+		                	title: 'GeÃƒÂ¤ndert',
 	    	            	width: '5%',
 	        	        	display: function(data) {
 	            	    		var date = new Date(data.record.timecreated*1000);
@@ -1280,7 +1280,7 @@
 		            		}
 		            	},
 			            timemodified: {
-			            	title: 'GeÃ¤ndert',
+			            	title: 'GeÃƒÂ¤ndert',
 			            	width: '5%',
 		    	        	display: function(data) {
 		        	    		var date = new Date(data.record.timecreated*1000);
@@ -1411,7 +1411,7 @@
 		            		}
 		            	},
 			            timemodified: {
-			            	title: 'GeÃ¤ndert',
+			            	title: 'GeÃƒÂ¤ndert',
 			            	width: '5%',
 		    	        	display: function(data) {
 		        	    		var date = new Date(data.record.timecreated*1000);
@@ -1437,7 +1437,7 @@
 			    });
     			
     			//
-				// RÃ¼ckmeldungen
+				// RÃƒÂ¼ckmeldungen
 				//
 				$('#rueckmeldungen').jtable({
     			    selecting: true,
@@ -1538,7 +1538,7 @@
 		            		}
 		            	},
 			            timemodified: {
-			            	title: 'GeÃ¤ndert',
+			            	title: 'GeÃƒÂ¤ndert',
 			            	width: '5%',
 		    	        	display: function(data) {
 		        	    		var date = new Date(data.record.timecreated*1000);
@@ -1658,7 +1658,7 @@
 		            		}
 		            	},
 			            timemodified: {
-			            	title: 'GeÃ¤ndert',
+			            	title: 'GeÃƒÂ¤ndert',
 			            	width: '5%',
 		    	        	display: function(data) {
 		        	    		var date = new Date(data.record.timecreated*1000);
@@ -1688,6 +1688,7 @@
 				$('#koop').jtable('load');
 				$('#kommunikation').jtable('load');
 				$('#lehrorganisation').jtable('load');
+				*/
 				jQuery(document.body).on('click', '.jtable-data-row', function() {
 					$("#tabs").tabs({
 						active : 0
@@ -1729,7 +1730,7 @@
 					<a id="linkKommunikation" href="#tabs-3">Kommunikation</a>
 				</li>
 				<li>
-					<a id="linkTests" href="#tabs-4">(Selbst-Überprüfung)</a>
+					<a id="linkTests" href="#tabs-4">(Selbst-ÃœberprÃ¼fung)</a>
 				</li>
 				<li>
 					<a id="linkKooperation" href="#tabs-5">Kooperation</a>
@@ -1738,16 +1739,16 @@
 					<a id="linkLehrorganisation" href="#tabs-6">Lehrorganisation</a>
 				</li>
 				<li>
-					<a id="linkRueckmeldungen" href="#tabs-7">Rückmeldungen</a>
+					<a id="linkRueckmeldungen" href="#tabs-7">RÃ¼ckmeldungen</a>
 				</li>
 				<li><a href="#tabs-1">Kurse</a></li>
 				<li><a href="#tabs-stats">Statistiken</a>
 		    	<li><a id="linkDateien" href="#tabs-2">Dateien</a></li>
 		    	<li><a id="linkKommunikation" href="#tabs-3">Kommunikation</a></li>
-		    	<li><a id="linkTests" href="#tabs-4">(Selbst-ÃœberprÃ¼fung)</a></li>
+		    	<li><a id="linkTests" href="#tabs-4">(Selbst-ÃƒÅ“berprÃƒÂ¼fung)</a></li>
 		    	<li><a id="linkKooperation" href="#tabs-5">Kooperation</a></li>
 		    	<li><a id="linkLehrorganisation" href="#tabs-6">Lehrorganisation</a></li>
-				<li><a id="linkRueckmeldungen" href="#tabs-7">RÃ¼ckmeldungen</a></li>
+				<li><a id="linkRueckmeldungen" href="#tabs-7">RÃƒÂ¼ckmeldungen</a></li>
 				<li><a href="#tabs-8">Nutzer/innen</a></li>
 			</ul>
 			<div id="tabs-1">

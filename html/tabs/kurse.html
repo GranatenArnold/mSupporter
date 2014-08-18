@@ -3,57 +3,53 @@
 	<head>
  		<!-- Create table -->
 		<script type="text/javascript">
+		
+			function KurstabelleZeichnen(suchstring) {
+				$.ajax({
+					url: "https://mdl-alpha.un.hrz.tu-darmstadt.de/report/toverview/rest/router.php/course/?query=" + suchstring,
+					dataType: 'json',
+				}).done(function (result) {
+					var data = new google.visualization.DataTable();
+					data.addColumn('number', 'ID');
+			        data.addColumn('string', 'Semester');
+			        data.addColumn('string', 'FB');
+			        data.addColumn('string', 'Name');
+			        var array = new Array();
+			        result = result.Records;
+			        //console.log(result);
+        	    	$.each(result, function(id, felder) {
+        	    		console.log(felder);
+        	    		
+        	    		var subarray = new Array();
+        	    		subarray.push(parseInt(felder.id));
+        	    		subarray.push(felder.semester);
+        	    		subarray.push(felder.fb);
+        	    		subarray.push(felder.fullname);
+        	    		//data.addRow(array);
+        				//data.addRow('boolean', eigenschaften.bezeichnung);
+        				array.push(subarray);
+        			});
+        	    	data.addRows(array);
+			        var table = new google.visualization.Table(document.getElementById('courses'));
+			        table.draw(data, {showRowNumber: false});
+			        google.visualization.events.addListener(table, 'select', function() {
+			        	console.log(table.getSelection());
+			        });
+			        
+				});
+			}
+			
 	    	$(document).ready(function () {
-    	
-	    		$('#courses').jtable({
-     		       //title: 'Kurse',
-        		    actions: {
-        	   	 		listAction: function (postData, jtParams) {
-        	    	    	return $.Deferred(function ($dfd) {
-        	    	        	$.ajax({
-        	    	            	url: '/report/toverview/rest/router.php/course/',
-        	    	            	type: 'GET',
-        	    	            	dataType: 'json',
-        	    	            	data: postData,
-        	    	            	success: function (data) {
-        	    	            	    $dfd.resolve(data);
-        	    	            	},
-        	    	            	error: function () {
-        	    	            	    $dfd.reject();
-        	    	            	}
-        	    	        	});
-        	    	    	});
-        	    		}
-        	    	},
-        	    	fields: {
-        	        		id: {
-        	        			title: 'ID',
-        	            		key: true,
-        	            		list: true,
-        	            		width: '1%'
-        	        		},
-        	        		semester: {
-        	            		title: 'Semester',
-        	            		width: '3%'
-        	        		},
-        	        		fb: {
-        	            		title: 'FB',
-        	            		width: '5%'
-        	        		},
-        	        		fullname: {
-        	            		title: 'Name'
-        	        		}
-        	    	}
-        		});
-        		$('#courses').jtable('load');
-        	
-        		jQuery(function($) {
-        			$('#search').keyup(function() {
-        				var value = $(this).val();
-        				$('#courses').jtable('load', {query: value});
-        			}).keyup;
-        		});
-        		
+    			$( "#search" ).keyup(function() {
+				  KurstabelleZeichnen($( this ).val());
+				});
+				
+			
+				
+			
+				
+				
+				
         		jQuery(document.body).on('click', 'tr', function(event) {
     				$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
     					var x = $(event.currentTarget);
