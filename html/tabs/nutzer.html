@@ -55,8 +55,14 @@ function KurstabelleZeichnen(suchstring) {
 
 	$(document).ready(function() {
 		$( "#searchUser" ).keyup(function() {
-			KurstabelleZeichnen($( this ).val());
-		});
+			value = $(this).val().toLowerCase();
+			delay(function(){
+		      if(value == $( "#searchUser" ).val().toLowerCase()) {
+				KurstabelleZeichnen(value);
+				}	
+		    }, 300 );
+			
+			});
 	});
 	/*
 	

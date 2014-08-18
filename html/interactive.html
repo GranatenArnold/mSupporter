@@ -35,6 +35,13 @@
 
 		<!-- Hier wird die Tabelle initiiert -->
 		<script type="text/javascript">
+			var delay = (function(){
+			  var timer = 0;
+			  return function(callback, ms){
+			    clearTimeout (timer);
+			    timer = setTimeout(callback, ms);
+			  };
+			})();
 			$(document).ready(function () {
 			
 	    		// Tab Inhalte als eigene html in die Tabelle laden:
