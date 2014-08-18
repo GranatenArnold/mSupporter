@@ -430,8 +430,8 @@ function userDetailed($id) {
 				timemodified
 			FROM {user} WHERE id=".$id;
 	
-	$result = $DB->get_records_sql($sql);
-	
+	$result = $DB->get_record_sql($sql);
+	/*
 	$sql = "SELECT
 			mdl_role_assignments.id,
 			mdl_role_assignments.roleid,
@@ -451,7 +451,7 @@ function userDetailed($id) {
 			mdl_role_assignments.roleid = mdl_role.id AND
 			mdl_course.id = mdl_context.instanceid";
 	$result[$id]->roles = $DB->get_records_sql($sql);
-	
+	*/
 	
 	//echo "<pre>".print_r($result, true)."</pre>";
 	

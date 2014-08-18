@@ -31,7 +31,6 @@
 						function(res) {
 							directive = {
 								'.panel-title' : function(a) {
-									console.log("res: "+ res);
 									a = a.context;
 									var userID = a.id;
 									var vorname = a.firstname;
@@ -43,7 +42,6 @@
 								},
 								/*
 								'#kopf@style' : function (a) {
-									a = a.context;
 									var temp = "tu-darmstadt.de";
 									var email = a.email;
 									if(email.indexOf(temp) < 1) {
@@ -56,16 +54,14 @@
 								*/
 								'#id' : function(a) {
 									a = a.context;
-									
 									return "User ID: " + a.id;
 								},
 								
 								'#username' : function(a) {
 									a = a.context;
-									
 									return "Benutzername: " + a.username;
 								},
-								/*
+								
 								'#email' : function (a) {
 									a = a.context;
 									console.log("Entry: " + a);
@@ -73,7 +69,7 @@
 									
 									return "Email: " + "<a href='mailto:" + email + "'>" + email + "</a>";
 								},
-								*/
+								
 								'#sprache' : function (a) {
 									a = a.context;
 									var sprache = a.lang;
@@ -86,7 +82,7 @@
 							//console.log(res);
 							var json = JSON.parse(res);
 							$('div.templateUser')
-									.render(json.Records[0], directive);
+									.render(json.Records, directive);
 							// alert(res);
 						});
 		</script>
