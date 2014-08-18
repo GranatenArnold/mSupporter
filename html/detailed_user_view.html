@@ -16,6 +16,7 @@
 						<div id="username"></div>
 						<div id="email"></div>
 						<div id="sprache"></div>
+						<div id="tabelle_rollen"></div>
 					</div>
 				</div>
 			</div>
@@ -64,7 +65,6 @@
 								
 								'#email' : function (a) {
 									a = a.context;
-									console.log("Entry: " + a);
 									var email = a.email;
 									
 									return "Email: " + "<a href='mailto:" + email + "'>" + email + "</a>";
@@ -76,14 +76,39 @@
 									
 									return "Sprache: " + sprache;
 								},
-								
-								
 							};
 							//console.log(res);
 							var json = JSON.parse(res);
 							$('div.templateUser')
 									.render(json.Records, directive);
 							// alert(res);
+							console.log(json);
+							a = json.Records.roles;
+									var data = new google.visualization.DataTable();
+									data.addColumn('number', 'ID');
+									data.addColumn('string', 'Semester');
+									data.addColumn('string', 'FB');
+									data.addColumn('string', 'Kurs');
+									data.addColumn('string', 'Rolle');
+									var array = new Array();
+									//console.log(result);
+									$.each(a, function(id, felder) {
+										//console.log(felder);
+										var subarray = new Array();
+										subarray.push(parseInt(felder.course));
+										subarray.push(felder.semester);
+										subarray.push(felder.fb);
+										subarray.push(felder.fullname);
+										subarray.push(felder.name);
+										//data.addRow(array);
+										//data.addRow('boolean', eigenschaften.bezeichnung);
+										array.push(subarray);
+									});
+									data.addRows(array);
+									var table = new google.visualization.Table(document.getElementById('tabelle_rollen'));
+									table.draw(data, {
+										showRowNumber : false
+									});
 						});
 		</script>
 	</body>

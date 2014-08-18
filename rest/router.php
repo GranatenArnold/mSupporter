@@ -6,45 +6,6 @@ require_once '../../../config.php';
 
 $context = context_system::instance();
 require_capability('report/toverview:view', $context);
-/*
-
-function Rechtepruefung() {
-	GLOBAL $CFG;
-	require_once($CFG->libdir.'/adminlib.php');
-	$context = context_system::instance();
-	require_capability('report/toverview:view', $context);
-	
-	//admin_externalpage_setup('reporttoverview', '', null, '', array('pagelayout'=>'report'));
-	$hash = hash('sha256', microtime());
-	$_SESSION['tOverview_TOKEN'] = $hash;
-	global $DB;
-	$record = new stdClass();
-	$record->token = $hash;
-	$time = 60 * 60 * 5; // 5 Stunden;
-	$record->validuntil = time() + $time;
-	$DB->insert_record('report_toverview', $record);
-}
-
-
-if(!isset($_SESSION['tOverview_TOKEN'])) {
-	Rechtepruefung();
-}
-else {
-	global $DB;
-	$sql = "SELECT id FROM {report_toverview} WHERE validuntil < ".time();
-	$results = $DB->get_records_sql($sql);
-	foreach ($results as $key => $value) {
-		$DB->delete_records('report_toverview', array('id' => $value->id));
-	}
-	
-	$sql = "SELECT * FROM {report_toverview} WHERE token LIKE '".$_SESSION['tOverview_TOKEN']."' AND validuntil > ".time();
-	if (count($DB->get_records_sql($sql)) < 1) {
-		// TOKEN ABGELAUFEN
-		unset($_SESSION['tOverview_TOKEN']);
-		Rechtepruefung();
-	}	
-}
-*/
 
 \Slim\Slim::registerAutoloader ();
 
@@ -431,7 +392,7 @@ function userDetailed($id) {
 			FROM {user} WHERE id=".$id;
 	
 	$result = $DB->get_record_sql($sql);
-	/*
+	
 	$sql = "SELECT
 			mdl_role_assignments.id,
 			mdl_role_assignments.roleid,
@@ -450,14 +411,32 @@ function userDetailed($id) {
 			mdl_context.contextlevel=50 AND 
 			mdl_role_assignments.roleid = mdl_role.id AND
 			mdl_course.id = mdl_context.instanceid";
-	$result[$id]->roles = $DB->get_records_sql($sql);
-	*/
+	$result->roles = $DB->get_records_sql($sql);
 	
 	//echo "<pre>".print_r($result, true)."</pre>";
 	
 	$array = array("Result" => "OK", "Records" => $result );
-	echo json_encode($array);
-}
+	sendeJSON($array);
+	}
 
+function sendeJSON($array) {
+		sendeHeader("application/json");
+		echo json_encode($array);
+	}
+function sendeText($text, $convert=true) {
+		if ($convert && is_array($text))
+			$text = print_r($text, true);
+		sendeHeader();
+		echo $text;
+	}
 
+function sendeHeader($type="text/plain") {
+		if (headers_sent())
+			return true;
+		header('Content-type: '.$type);
+		header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+		header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
+		header('Pragma: no-cache');
+		header('Accept-Ranges: none');
+	}
 ?>
