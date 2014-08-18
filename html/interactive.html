@@ -46,6 +46,11 @@
 					$( "#kurse" ).html(inhalt);
 				});
 	    
+	    		$("#tablink_kurse").click(function() {
+					$.get("/report/toverview/html/tabs/kurse.html", function( inhalt ) {
+					$( "#kurse" ).html(inhalt);
+					});
+				});
 	    
 				//
 	    		// Tab: Nutzer
@@ -143,7 +148,7 @@
 		
 		<div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Kurse</a></li>
+				<li><a id="tablink_kurse" href="#tabs-1">Kurse</a></li>
 				<li><a id="tablink_User" href="#tabs-2">Nutzer/innen</a></li>
 		    	<li><a id="tablink_Dateien" href="#tabs-3">Dateien</a></li>
 		    	<li><a id="tablink_Kommunikation" href="#tabs-4">Kommunikation</a></li>
