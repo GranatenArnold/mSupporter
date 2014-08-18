@@ -31,7 +31,7 @@
 						function(res) {
 							directive = {
 								'.panel-title' : function(a) {
-									//console.log(a.context);
+									console.log("res: "+ res);
 									a = a.context;
 									var userID = a.id;
 									var vorname = a.firstname;
@@ -41,7 +41,7 @@
 									
 									return userLink;
 								},
-								
+								/*
 								'#kopf@style' : function (a) {
 									a = a.context;
 									var temp = "tu-darmstadt.de";
@@ -53,7 +53,7 @@
 										return "background-color: #99A604;";
 									}
 								},
-								
+								*/
 								'#id' : function(a) {
 									a = a.context;
 									
@@ -65,14 +65,15 @@
 									
 									return "Benutzername: " + a.username;
 								},
-								
+								/*
 								'#email' : function (a) {
 									a = a.context;
+									console.log("Entry: " + a);
 									var email = a.email;
 									
 									return "Email: " + "<a href='mailto:" + email + "'>" + email + "</a>";
 								},
-								
+								*/
 								'#sprache' : function (a) {
 									a = a.context;
 									var sprache = a.lang;
@@ -80,7 +81,9 @@
 									return "Sprache: " + sprache;
 								},
 								
+								
 							};
+							//console.log(res);
 							var json = JSON.parse(res);
 							$('div.templateUser')
 									.render(json.Records[0], directive);

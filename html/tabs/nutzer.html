@@ -33,16 +33,28 @@ function KurstabelleZeichnen(suchstring) {
 		table.draw(data, {
 			showRowNumber : false
 		});
-		google.visualization.events.addListener(table, 'select', function() {
-			console.log(table.getSelection());
-		});
+		// Setup listener
+		google.visualization.events.addListener(table, 'select', selectHandler);
+
+		// Select Handler. Call the table's getSelection() method
+		function selectHandler() {
+			var selection = table.getSelection();
+			//alert("That's row " + data.getValue(selection[0].row, 0))
+			$.get("/report/toverview/html/detailed_user_view.html", function( inhalt ) {
+				var x = data.getValue(selection[0].row, 0);
+				//console.log(x);
+				inhalt = inhalt.replace(/#ID#/g, x);
+				//console.log(inhalt);
+				$( "#getUser" ).html(inhalt);
+				$('body,html').animate({scrollTop:0},800);
+			});
+		}
 
 	});
 	}
 
 	$(document).ready(function() {
 		$( "#searchUser" ).keyup(function() {
-			console.log("Eingabe: " + $( this ).val());
 			KurstabelleZeichnen($( this ).val());
 		});
 	});

@@ -453,9 +453,10 @@ function userDetailed($id) {
 	$result[$id]->roles = $DB->get_records_sql($sql);
 	
 	
-	echo "<pre>".print_r($result, true)."</pre>";
+	//echo "<pre>".print_r($result, true)."</pre>";
 	
-	//$array = array("Result" => "OK", "Records" => $array ); echo json_encode($array);
+	$array = array("Result" => "OK", "Records" => $result );
+	echo json_encode($array);
 }
 
 
