@@ -48,58 +48,69 @@
 				//
 	    		// Tab: Nutzer
 	    		//
-				$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
-					$( "#nutzer" ).html(inhalt);
+	    		$("#tablink_User").click(function() {
+					$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
+						$( "#nutzer" ).html(inhalt);
+					});
 				});
 		
 	    
 				//
 				// Tab: Dateien
 				//
-				$.get("/report/toverview/html/tabs/dateien.html", function ( inhalt ) {
+				$("#tablink_Dateien").click(function() {
+					$.get("/report/toverview/html/tabs/dateien.html", function ( inhalt ) {
 					$( "#dateien" ).html(inhalt);
 				});
+				});
+				
 			
     	    
     			//
 				// Tab: Kommunikation
 				//
-    			$.get("/report/toverview/html/tabs/kommunikation.html", function ( inhalt ) {
-    				$( "#kommunikation" ).html(inhalt);
-    			});
+				$("#tablink_Kommunikation").click(function() {
+	    			$.get("/report/toverview/html/tabs/kommunikation.html", function ( inhalt ) {
+	    				$( "#kommunikation" ).html(inhalt);
+	    			});
+				});
 			
     		
 				//
 				// Tab: Tests
 				//
-				$.get("/report/toverview/html/tabs/tests.html", function ( inhalt ) {
-					$( "#tests" ).html(inhalt);
+				$("#tablink_tests").click(function() {
+					$.get("/report/toverview/html/tabs/tests.html", function ( inhalt ) {
+						$( "#tests" ).html(inhalt);
+					});
 				});
-				
 				
 				//
 				// Tab: Kooperation
 				//
-				$.get("/report/toverview/html/tabs/kooperation.html", function ( inhalt ) {
-					$( "#koop" ).html(inhalt);
+				$("#tablink_koop").click(function() {
+					$.get("/report/toverview/html/tabs/kooperation.html", function ( inhalt ) {
+						$( "#koop" ).html(inhalt);
+					});
 				});
 				
-				
 				//
-				// Tab: RÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ckmeldungen
+				// Tab: RÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ckmeldungen
 				//
-				$.get("/report/toverview/html/tabs/rueckmeldungen.html", function ( inhalt ) {
-					$( "#rueckmeldungen" ).html(inhalt);
+				$("#tablink_Rueckmeldungen").click(function() {
+					$.get("/report/toverview/html/tabs/rueckmeldungen.html", function ( inhalt ) {
+						$( "#rueckmeldungen" ).html(inhalt);
+					});
 				});
-				
 				
 				//
 				// Tab: Lehrorganisation
 				//
-				$.get("/report/toverview/html/tabs/lehrorganisation.html", function ( inhalt ) {
+				$("#tablink_Lehrorganisation").click(function() {
+					$.get("/report/toverview/html/tabs/lehrorganisation.html", function ( inhalt ) {
 					$( "#lehrorganisation" ).html(inhalt);
-				});
-	    		
+					});
+	    		});
 				
 	    		//
 	    		// Bei Klick auf eine Zeile oeffnet sich automatisch der erste Tab ("Kurse"), ausser, wenn im Tab "Nutzer/innen" auf eine Zeile geklickt wird.
@@ -131,13 +142,13 @@
 		<div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Kurse</a></li>
-				<li><a href="#tabs-2">Nutzer/innen</a></li>
-		    	<li><a href="#tabs-3">Dateien</a></li>
-		    	<li><a href="#tabs-4">Kommunikation</a></li>
-		    	<li><a href="#tabs-5">Selbst-&Uuml;berpr&uuml;fung</a></li>
-		    	<li><a href="#tabs-6">Kooperation</a></li>
-		    	<li><a href="#tabs-7">Lehrorganisation</a></li>
-				<li><a href="#tabs-8">R&uuml;ckmeldungen</a></li>
+				<li><a id="tablink_User" href="#tabs-2">Nutzer/innen</a></li>
+		    	<li><a id="tablink_Dateien" href="#tabs-3">Dateien</a></li>
+		    	<li><a id="tablink_Kommunikation" href="#tabs-4">Kommunikation</a></li>
+		    	<li><a id="tablink_tests" href="#tabs-5">Selbst-&Uuml;berpr&uuml;fung</a></li>
+		    	<li><a id="tablink_koop" href="#tabs-6">Kooperation</a></li>
+		    	<li><a id="tablink_Lehrorganisation" href="#tabs-7">Lehrorganisation</a></li>
+				<li><a id="tablink_Rueckmeldungen" href="#tabs-8">R&uuml;ckmeldungen</a></li>
 			</ul>
 			<div id="tabs-1">
 				<div id="kurse"></div>

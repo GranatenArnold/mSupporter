@@ -1,92 +1,85 @@
-<!DOCTYPE html>
+<!-- Create table -->
 <html>
-	<head>	
- 		<!-- Create table -->
-		<script type="text/javascript">
-	    	$(document).ready(function () {
-    	
-	    		$('#user').jtable({
-     		       //title: 'Kurse',
-        		    actions: {
-        	   	 		listAction: function (postData, jtParams) {
-        	    	    	return $.Deferred(function ($dfd) {
-        	    	        	$.ajax({
-        	    	            	url: '/report/toverview/rest/router.php/user/',
-        	    	            	type: 'GET',
-        	    	            	dataType: 'json',
-        	    	            	data: postData,
-        	    	            	success: function (data) {
-        	    	            	    $dfd.resolve(data);
-        	    	            	},
-        	    	            	error: function () {
-        	    	            	    $dfd.reject();
-        	    	            	}
-        	    	        	});
-        	    	    	});
-        	    		}
-        	    	},
-        	    	fields: {
-        	        		id: {
-        	        			title: 'ID',
-        	            		key: true,
-        	            		list: true,
-        	            		width: '1%'
-        	        		},
-        	        		firstname: {
-        	            		title: 'Vorname'
-        	        		},
-        	        		lastname: {
-        	            		title: 'Nachname'
-        	        		},
-        	        		email: {
-        	            		title: 'Email'
-        	        		},
-        	        		username: {
-        	        			title: 'Benutzername'
-        	        		}
-        	    	}
-        		});
-        		$('#user').jtable('load');
-        	
-        		jQuery(function($) {
-        			$('#searchUser').keyup(function() {
-        				var value = $(this).val();
-        				$('#user').jtable('load', {query: value});
-        			}).keyup;
-        		});
-        		
-        		jQuery(document.body).on('click', 'tr', function(event) {
-    				$.get("/report/toverview/html/detailed_user_view.html", function( inhalt ) {
-    					var x = $(event.currentTarget);
-    					//console.log(x.attr('data-record-key'));
-    					inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
-    					//console.log(inhalt);
-    					$( "#getUser" ).html(inhalt);
-    					$('body,html').animate({scrollTop:0},800);
-    				});
-    			});
-        		
-        	});
-		</script>
-	</head>
+	<head>
+<script type="text/javascript">
+function KurstabelleZeichnen(suchstring) {
+	$.ajax({
+		url : '/report/toverview/rest/router.php/user/?query=' + suchstring,
+		dataType : 'json',
+	}).done(function(result) {
+		var data = new google.visualization.DataTable();
+		data.addColumn('number', 'ID');
+		data.addColumn('string', 'TU-ID');
+		data.addColumn('string', 'Vorname');
+		data.addColumn('string', 'Nachname');
+		data.addColumn('string', 'E-Mail');
+		var array = new Array();
+		result = result.Records;
+		//console.log(result);
+		$.each(result, function(id, felder) {
+			//console.log(felder);
+			var subarray = new Array();
+			subarray.push(parseInt(felder.id));
+			subarray.push(felder.username);
+			subarray.push(felder.firstname);
+			subarray.push(felder.lastname);
+			subarray.push(felder.email);
+			//data.addRow(array);
+			//data.addRow('boolean', eigenschaften.bezeichnung);
+			array.push(subarray);
+		});
+		data.addRows(array);
+		var table = new google.visualization.Table(document.getElementById('user'));
+		table.draw(data, {
+			showRowNumber : false
+		});
+		google.visualization.events.addListener(table, 'select', function() {
+			console.log(table.getSelection());
+		});
 
-	<body>
-		<div class="row">
-			<div class="col-md-6">
-				<div>
-					Nutzer suchen:
-	        		<input id="searchUser"></input>
-	        	</div>
-	    	</div>
-		</div>
+	});
+	}
+
+	$(document).ready(function() {
+		$( "#searchUser" ).keyup(function() {
+			console.log("Eingabe: " + $( this ).val());
+			KurstabelleZeichnen($( this ).val());
+		});
+	});
+	/*
 	
-		<div class="row">
-			<div class="col-md-6">
-	        	<div id="user"></div>
-	        </div>
-	        <div class="col-md-6">
-				<div id = "getUser"></div>
-	    	</div>
+	jQuery(document.body).on('click', 'tr', function(event) {
+	$.get("/report/toverview/html/detailed_user_view.html", function(inhalt) {
+	var x = $(event.currentTarget);
+	//console.log(x.attr('data-record-key'));
+	inhalt = inhalt.replace(/#ID#/g, x.attr('data-record-key'));
+	//console.log(inhalt);
+	$("#getUser").html(inhalt);
+	$('body,html').animate({
+	scrollTop : 0
+	}, 800);
+	});
+	});
+	});
+	*/</script>
+</head>
+<body>
+<div class="row">
+	<div class="col-md-6">
+		<div>
+			Nutzer suchen:
+			<input id="searchUser" />
 		</div>
-	</body>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<div id="user"></div>
+	</div>
+	<div class="col-md-6">
+		<div id = "getUser"></div>
+	</div>
+</div>
+</body>
 </html>
