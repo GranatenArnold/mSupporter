@@ -3,7 +3,7 @@
  */
 
 function tabelle(divID, fields, url) {
-			console.log('/report/toverview/rest/router.php' + url);
+			//console.log('/report/toverview/rest/router.php' + url);
 			$.ajax({
 				fields : fields,
 	            url: '/report/toverview/rest/router.php' + url,
