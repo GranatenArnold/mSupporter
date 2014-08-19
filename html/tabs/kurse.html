@@ -19,7 +19,7 @@
 			        result = result.Records;
 			        //console.log(result);
         	    	$.each(result, function(id, felder) {
-        	    		console.log(felder);
+        	    		//console.log(felder);
         	    		
         	    		var subarray = new Array();
         	    		subarray.push(parseInt(felder.id));
@@ -57,7 +57,8 @@
 			
 	    	$(document).ready(function () {
 	    		
-	    		/*var delay = (function(){
+	    		// Define a delay function to delay the database request for the search box.
+	    		var delay = (function(){
 	    			var timer = 0;
 	    			return function(callback, ms){
 	    				clearTimeout (timer);
@@ -65,18 +66,12 @@
 	    			};
 	    		})();
 	    		
+	    		// Implement it into the search box.
     			$( "#search" ).keyup(function() {
+    				value = $(this).val();
     				delay(function(){
-    					KurstabelleZeichnen($( this ).val());
-    				}, 1000);
-    				
-    				//KurstabelleZeichnen($( this ).val()), 3000);
-    				//}
-    			});*/
-    			$(document).ready(function() {
-    				$( "#search" ).keyup(function() {
-    					KurstabelleZeichnen($( this ).val());
-    				});
+    					KurstabelleZeichnen(value);
+    					}, 300); // Delay time can be set here (ms)
     			});
         	});
 		</script>
