@@ -53,19 +53,34 @@
 							$( "#kurse" ).html(inhalt);
 						});
 					}
-					//else {
-					//	var value = $("#search").val();
-					//	$('#search').val(value);
-					//}
+					else {						
+						var v1 = $('#getCourse').html();
+						//console.log(v1);
+						$.get("/report/toverview/html/tabs/kurse.html", function( inhalt ) {
+							$( "#kurse" ).html(inhalt);
+							$('#getCourse').html(v1);
+						});
+					}
 				});
 	    
 				//
 	    		// Tab: Nutzer
 	    		//
 	    		$("#tablink_User").click(function() {
-					$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
-						$( "#nutzer" ).html(inhalt);
-					});
+	    			if ($('#getUser').is(':empty')) {
+	    				$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
+							$( "#nutzer" ).html(inhalt);
+						});
+	    			}
+	    			else {
+	    				var v1 = $('#getUser').html();
+						//console.log(v1);
+						$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
+							$( "#nutzer" ).html(inhalt);
+							$('#getUser').html(v1);
+						});
+	    			}
+					
 				});
 		
 	    
