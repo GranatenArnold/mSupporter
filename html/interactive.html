@@ -45,10 +45,17 @@
 					$( "#kurse" ).html(inhalt);
 				});
 	    
+	    		
 	    		$("#tablink_kurse").click(function() {
-					$.get("/report/toverview/html/tabs/kurse.html", function( inhalt ) {
-					$( "#kurse" ).html(inhalt);
-					});
+					if ($('#getCourse').is(':empty')) {
+						$.get("/report/toverview/html/tabs/kurse.html", function( inhalt ) {
+							$( "#kurse" ).html(inhalt);
+						});
+					}
+					//else {
+					//	var value = $("#search").val();
+					//	$('#search').val(value);
+					//}
 				});
 	    
 				//
@@ -141,7 +148,9 @@
 	<body>
 		<script>
 		$(function() {
-	    	$( "#tabs" ).tabs();
+	    	$( "#tabs" ).tabs({
+	    		cache : true
+	    	});
 	    });
 		</script>
 		
