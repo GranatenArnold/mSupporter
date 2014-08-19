@@ -24,7 +24,7 @@ function tabelle(divID, fields, url) {
         				data.addColumn(eigenschaften.typ, eigenschaften.bezeichnung);
         			});
         			data.addColumn('datetime', 'Erstellt');
-        			data.addColumn('datetime', 'Geändert');
+        			data.addColumn('datetime', 'GeÃ¤ndert');
         	    	result = result.Records;
         	    	var array = new Array();
         	    	$.each(result, function(id, felder) {
@@ -57,6 +57,31 @@ function tabelle(divID, fields, url) {
         			table.draw(data, {
         				showRowNumber : false
         			});
+        			
+        			// Setup listener
+					google.visualization.events.addListener(table, 'select', selectHandler);
+			
+					// Select Handler. Call the table's getSelection() method
+					function selectHandler() {
+						var selection = table.getSelection();
+						$
+							.ajax({
+								url : "/report/toverview/html/detailed_course_view.html",
+								context : document.body,
+								success: function (inhalt) {
+									var x = data.getValue(selection[0].row, 0);
+									var find = "#ID#";
+									var regex = new RegExp(find, 'g');
+									//console.log(regex);
+									inhalt = inhalt.replace(regex, x);
+									//console.log(inhalt);
+									$( "#getCourse").html(inhalt);
+									$("#tabs").tabs({active: 0});
+								}
+							});
+						}
+					
+        			
             	},
 	            error: function (data) {
 	            	console.log(data);
