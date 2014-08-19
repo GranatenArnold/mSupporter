@@ -8,10 +8,19 @@
 		<div class="templateUser">
 			<div class="panel">
 				<div class="panel-heading" id="kopf">
-					<h1 id="panel-title"></h1>
-					<h5>
-					<div id="username"></div><div id="email"></div>
-					</h5>
+					<div class="row">
+						<div class='col-md-6'>
+							<h1 id="panel-title"></h1>
+							<h5>
+								<div id="username"></div>
+								<div id="email"></div>
+							</h5>
+						</div>
+						<div class='col-md-6'>
+							<div id="googleSearch"></div>
+						</div>
+					</div>
+					
 				</div>
 				<div class="panel-body">
 					<div class="well">
@@ -71,6 +80,14 @@
 									var email = a.email;
 									
 									return "<a href='mailto:" + email + "'>" + email + "</a>";
+								},
+								'#googleSearch' : function (a) {
+									a = a.context;
+									var name = a.firstname + " " + a.lastname + " TU Darmstadt";
+									name = name.replace(/ /g, '%20');
+									var link = "https://www.google.de/#q=" + name;
+									var string = "<a href='" + link + "'><img src=/report/toverview/pix/google.jpg width='200px' align='right'></a>";
+									return string;
 								},
 								
 								'#sprache' : function (a) {
