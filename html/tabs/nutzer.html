@@ -43,7 +43,7 @@ function KurstabelleZeichnen(suchstring) {
 			$.get("/report/toverview/html/detailed_user_view.html", function( inhalt ) {
 				var x = data.getValue(selection[0].row, 0);
 				//console.log(x);
-				inhalt = inhalt.replace(/#ID#/g, x);
+				inhalt = inhalt.replace(/USERID/g, x);
 				//console.log(inhalt);
 				$( "#getUser" ).html(inhalt);
 				$('body,html').animate({scrollTop:0},800);

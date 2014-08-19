@@ -25,7 +25,7 @@
 		<script>
 			$
 				.ajax({
-					url : "/report/toverview/rest/router.php/user/id/#ID#",
+					url : "/report/toverview/rest/router.php/user/id/USERID",
 					context : document.body
 				})
 				.done(
@@ -84,12 +84,12 @@
 							// alert(res);
 							console.log(json);
 							a = json.Records.roles;
-									var data = new google.visualization.DataTable();
-									data.addColumn('number', 'ID');
-									data.addColumn('string', 'Semester');
-									data.addColumn('string', 'FB');
-									data.addColumn('string', 'Kurs');
-									data.addColumn('string', 'Rolle');
+									var dataUser = new google.visualization.DataTable();
+									dataUser.addColumn('number', 'ID');
+									dataUser.addColumn('string', 'Semester');
+									dataUser.addColumn('string', 'FB');
+									dataUser.addColumn('string', 'Kurs');
+									dataUser.addColumn('string', 'Rolle');
 									var array = new Array();
 									//console.log(result);
 									$.each(a, function(id, felder) {
@@ -104,11 +104,48 @@
 										//data.addRow('boolean', eigenschaften.bezeichnung);
 										array.push(subarray);
 									});
-									data.addRows(array);
-									var table = new google.visualization.Table(document.getElementById('tabelle_rollen'));
-									table.draw(data, {
+									dataUser.addRows(array);
+									var tableUser = new google.visualization.Table(document.getElementById('tabelle_rollen'));
+									tableUser.draw(dataUser, {
 										showRowNumber : false
 									});
+									
+									// Setup listener
+									google.visualization.events.addListener(tableUser, 'select', selectHandler);
+							
+									// Select Handler. Call the table's getSelection() method
+									function selectHandler() {
+										var selection = tableUser.getSelection();
+										$
+											.ajax({
+												url : "/report/toverview/html/detailed_course_view.html",
+												context : document.body,
+												success: function (inhalt) {
+													var x = dataUser.getValue(selection[0].row, 0);
+													var find = "#ID#";
+													var regex = new RegExp(find, 'g');
+													//console.log(regex);
+													inhalt = inhalt.replace(regex, x);
+													//console.log(inhalt);
+													$( "#getCourse").html(inhalt);
+													$("#tabs").tabs({active: 0});
+												}
+											});
+										/*
+										//alert("That's row " + data.getValue(selection[0].row, 0))
+										$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
+											var x = data.getValue(selection[0].row, 0);
+											console.log("X: " + x);
+											inhalt = inhalt.replace("/#ID#/g", x);
+											console.log(inhalt);
+											$( "#getCourse").html(inhalt);
+											//$("#tabs").tabs({active: 0});
+											//$('body,html').animate({scrollTop:0},800);
+										});
+										*/
+									}
+
+									
 						});
 		</script>
 	</body>
