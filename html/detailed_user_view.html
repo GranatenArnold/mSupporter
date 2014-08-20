@@ -101,8 +101,13 @@
 									return "<div class='row'><div class='col-md-3'>Letzter Zugriff:</div><div class='col-md-9'>" + DateAndTimeBetween(a.context.lastaccess) + "</div></div>";
 								},
 							};
-							//console.log(res);
-							var json = JSON.parse(res);
+							//console.log(navigator.userAgent.toLowerCase());
+							if(checkBrowserName('firefox')) {
+								var json = res;
+							}
+							else {
+								var json = JSON.parse(res.toString());
+							}
 							$('div.templateUser')
 									.render(json.Records, directive);
 							// alert(res);

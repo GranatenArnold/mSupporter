@@ -67,3 +67,17 @@ function getTimeBetweenNowAndUnixtimetamp(Unixtimestamp) {
 function DateAndTimeBetween(Unixtimestamp) {
 	return getDisplayDate(Unixtimestamp) + "<br />(" + getTimeBetweenNowAndUnixtimetamp(Unixtimestamp) + ")";
 }
+
+
+/**
+ * Handelt es sich um den Browser name?
+ * @param name MSIE, opera, safari, firefox
+ * @returns {Boolean}
+ */
+function checkBrowserName(name){  
+	   var agent = navigator.userAgent.toLowerCase();  
+	   if (agent.indexOf(name.toLowerCase())>-1) {  
+	     return true;  
+	   }  
+	   return false;  
+	 }  

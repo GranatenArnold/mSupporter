@@ -24,6 +24,8 @@ $app->map ( '/Rueckmeldungen', 'Rueckmeldungen' )->via ( 'GET', 'POST' );
 $app->map ( '/user/(:identifier)', 'user' )->via ( 'GET', 'POST' );
 $app->map ( '/user/id/:id', 'userDetailed' )->via ( 'GET', 'POST');
 $app->map ( '/Category(/:id)', 'Category' )->via ( 'GET', 'POST' );
+$app->map ( '/Schnittstelle(/:id)', 'Schnittstelle' )->via ( 'GET', 'POST' );
+$app->map ( '/Kategorie(/:id)', 'Kategorie' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -382,13 +384,7 @@ function userDetailed($id) {
 				lastname,
 				email,
 				lang,
-				firstaccess,
-				lastaccess,
-				lastlogin,
-				currentlogin,
-				lastip,
-				timecreated,
-				timemodified
+				lastaccess
 			FROM {user} WHERE id=".$id;
 	
 	$result = $DB->get_record_sql($sql);
@@ -398,19 +394,19 @@ function userDetailed($id) {
 			mdl_role_assignments.roleid,
 			mdl_context.instanceid as course,
 			mdl_role.name,
-			mdl_course.category as fbid,
-			mdl_course.fullname,
-			mdl_course.shortname,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE id=mdl_course.category) as fb,
-			(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE id=mdl_course.category) as semesterid,
-			(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE id=(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE id=mdl_course.category)) as semester
-			FROM mdl_role_assignments, mdl_context, mdl_role, mdl_course
+			{course}.category as fbid,
+			{course}.fullname,
+			{course}.shortname,
+			(SELECT {course_categories}.name FROM {course_categories} WHERE id={course}.category) as fb,
+			(SELECT {course_categories}.parent FROM {course_categories} WHERE id={course}.category) as semesterid,
+			(SELECT {course_categories}.name FROM {course_categories} WHERE id=(SELECT {course_categories}.parent FROM {course_categories} WHERE id={course}.category)) as semester
+			FROM mdl_role_assignments, mdl_context, mdl_role, {course}
 			WHERE
 			userid=".$id." AND
 			mdl_context.id = mdl_role_assignments.contextid AND
 			mdl_context.contextlevel=50 AND 
 			mdl_role_assignments.roleid = mdl_role.id AND
-			mdl_course.id = mdl_context.instanceid";
+			{course}.id = mdl_context.instanceid";
 	$result->roles = $DB->get_records_sql($sql);
 	
 	//echo "<pre>".print_r($result, true)."</pre>";
@@ -439,4 +435,74 @@ function sendeHeader($type="text/plain") {
 		header('Pragma: no-cache');
 		header('Accept-Ranges: none');
 	}
+
+/**
+ * Gibt an, wie viele Kurse sich in Kategorie bzw. Subkategorien befinden
+ *  
+ */
+function CountCoursesInCategory($parentCategory = 0) {
+	GLOBAL $DB;
+	$schnittstelle = 0;
+	$manuell = 0;
+	$gesamt = 0;
+	$sql = "SELECT id, idnumber FROM mdl_course WHERE category=".$parentCategory;
+	$coursesInCategory = $DB->get_records_sql($sql);
+	foreach ($coursesInCategory as $id => $zahlen) {
+		if(!empty($zahlen->idnumber)) $schnittstelle++;
+		else $manuell++;
+	}
+	
+	$subcategories = SubcategoriesInCategory($parentCategory);
+	foreach ($subcategories as $category => $werte) {
+		$zahlen = CountCoursesInCategory($category);
+		$schnittstelle += $zahlen['schnittstelle'];
+		$manuell += $zahlen['manuell'];		
+	}
+	
+	$gesamt = $schnittstelle + $manuell;
+	return array("schnittstelle" => $schnittstelle, "manuell" => $manuell, "gesamt" => $gesamt);
+}
+
+function SubcategoriesInCategory($parentCategory = 0) {
+	GLOBAL $DB;
+	$sql = "SELECT id, name FROM {course_categories} WHERE parent=".$parentCategory." ORDER BY {course_categories}.timemodified ASC";
+	return $DB->get_records_sql($sql);
+}
+	
+
+
+function Schnittstelle($parentCategory = 0) {
+	$subcategories = SubcategoriesInCategory($parentCategory);
+	foreach ($subcategories as $id => $werte) {
+		$zahlen = CountCoursesInCategory($id);
+		$werte->schnittstelle = $zahlen['schnittstelle'];
+		$werte->manuell = $zahlen['manuell'];
+		$werte->gesamt = $zahlen['gesamt'];
+		
+	}
+	//echo "<pre>".print_r($subcategories, true)."</pre>";
+	sendeJSON($subcategories);
+}
+
+function Kategorie($category = 0) {
+	if($category == 0) {
+		sendeJSON(array("parentName" => '', "parentID" => 0));
+		return;
+	}
+	GLOBAL $DB;
+	$sql = "SELECT parent FROM {course_categories} WHERE id = ".$category;
+	$id = $DB->get_record_sql($sql);
+	$parent = $id->parent;
+	$sql = "SELECT name FROM {course_categories} WHERE id = ".$parent;
+	$id = $DB->get_record_sql($sql);
+	if(!$id) {
+		$array = array("parentName" => '', "parentID" => $parent);
+	}
+	else {
+		$array = array("parentName" => $id->name, "parentID" => $parent);
+	}
+	//echo "<pre>".print_r($array, true)."</pre>";
+	sendeJSON($array);
+}
+
 ?>
