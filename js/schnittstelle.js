@@ -1,5 +1,5 @@
 /**
- * Interaktive Anzeige über Anteil der Schnittstellenkurse
+ * Interaktive Anzeige Ã¼ber Anteil der Schnittstellenkurse
  */
 
 function drawTable(divIDlinks, divIDrechts, result) {
@@ -64,7 +64,7 @@ function drawChart(divIDlinks, divIDrechts, result) {
 	data.addRows(array);
 	var options = {
 		// title: '',
-		colors : [ tucanGruen, moodleGelb ],
+		colors : [ moodleGelb, tucanGruen ],
 		height : 450,
 		isStacked : true,
 	// hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
@@ -93,7 +93,7 @@ function drawPieCharts(divIDUnten, result) {
 		if (counter == 0) {
 			htmlCode = htmlCode + '<div class=row>';
 		}
-		console.log(felder);
+		//console.log(felder);
 
 		mitCategory = panelTemplate.replace(/CATEGORY/g, felder.id);
 		mitName = mitCategory.replace(/NAME/g, felder.name);
@@ -116,36 +116,28 @@ function drawPieCharts(divIDUnten, result) {
 		data.addColumn('number', 'Anzahl');
 		var array = new Array();
 		var subarray = new Array();
-		subarray.push('Manuell');
+		subarray.push(felder.manuell.toString());
 		subarray.push(felder.manuell);
 		array.push(subarray);
 		var subarray = new Array();
-		subarray.push('Schnittstelle');
+		subarray.push(felder.schnittstelle.toString());
 		subarray.push(felder.schnittstelle);
 		array.push(subarray);
 		data.addRows(array);
+		var tucanGruen = "#b1bd00";
+		var moodleGelb = "#F5A300";
 		var options = {
+			title: 'Kurse: ' + felder.gesamt.toString(),
 			pieHole : 0.4,
+			slices: {
+	            0: { color: moodleGelb},
+	            1: { color: tucanGruen }
+	          }
 		};
 		var container = 'content' + felder.id;
 		var chart = new google.visualization.PieChart(document
 				.getElementById(container));
 		chart.draw(data, options);
-//
-//		var data = google.visualization.arrayToDataTable([
-//				[ 'Task', 'Hours per Day' ], [ 'Work', 11 ], [ 'Eat', 2 ],
-//				[ 'Commute', 2 ], [ 'Watch TV', 2 ], [ 'Sleep', 7 ] ]);
-//
-//		var options = {
-//			title : 'My Daily Activities',
-//			pieHole : 0.4,
-//		};
-//		container = 'content' + felder.id;
-//		console.log("Container: " + container);
-//		var chart = new google.visualization.PieChart(document
-//				.getElementById('content' + felder.id));
-//		chart.draw(data, options);
-
 	});
 }
 
