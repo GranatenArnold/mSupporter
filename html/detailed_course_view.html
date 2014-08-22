@@ -8,7 +8,7 @@
 		<div class="template">
 			<div class="panel">
 				<div class="panel-heading" id="kopf">
-					<h3 class="panel-title"></h3>
+					<h3 class="panel-title" id="header"></h3>
 				</div>
 				<div class="panel-body">
 					<div class="well">
@@ -42,6 +42,8 @@
 		</div>
 		
 		<script>
+			
+			$( "#header" ).html(loader);
 			$
 				.ajax({
 					url : "/report/toverview/rest/router.php/course/id/#ID#",

@@ -58,6 +58,7 @@ function KurstabelleZeichnen(suchstring) {
 			value = $(this).val().toLowerCase();
 			delay(function(){
 		      if(value == $( "#searchUser" ).val().toLowerCase()) {
+		      	$( "#user" ).html(loader);
 				KurstabelleZeichnen(value);
 				}	
 		    }, 300 );
@@ -82,22 +83,22 @@ function KurstabelleZeichnen(suchstring) {
 	*/</script>
 </head>
 <body>
-<div class="row">
-	<div class="col-md-6">
-		<div>
-			Nutzer suchen:
-			<input id="searchUser" />
+	<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+		            <div class="panel-heading">
+		              <h3 class="panel-title">
+		              	<div class="row">
+		              		<div class="col-md-3">Nutzer suchen:</div>
+		              		<div class="col-md-9"><input id="searchUser"></input></div>
+		              	</div>
+		            </div>
+		            <div class="panel-body" id="user">
+		            </div>
+		          </div>
+	    	</div>
+	    	<div class="col-md-6">
+				<div id = "getUser"></div>
 		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-6">
-		<div id="user"></div>
-	</div>
-	<div class="col-md-6">
-		<div id = "getUser"></div>
-	</div>
-</div>
 </body>
 </html>

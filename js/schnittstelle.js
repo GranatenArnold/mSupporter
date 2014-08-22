@@ -1,5 +1,5 @@
 /**
- * Interaktive Anzeige Ã¼ber Anteil der Schnittstellenkurse
+ * Interaktive Anzeige ÃƒÂ¼ber Anteil der Schnittstellenkurse
  */
 
 function drawTable(divIDlinks, divIDrechts, result) {
@@ -142,8 +142,9 @@ function drawPieCharts(divIDUnten, result) {
 }
 
 function DrawGUI(divIDlinks, divIDrechts, parentCategory) {
+	$(".loader").html(loader);
 	$("#linksOben").html(
-			'<button type="button" class="btn btn-default">Nach oben</button>');
+			'<div>-> Zurück</div>');
 	$.ajax(
 			{
 				url : "/report/toverview/rest/router.php/Schnittstelle/"
@@ -161,8 +162,8 @@ function DrawGUI(divIDlinks, divIDrechts, parentCategory) {
 			function(res) {
 				// console.log(res);
 				$("#linksOben").html(
-						'<button type="button" class="btn btn-default" onclick=\'DrawGUI(\"'
+						'<div onclick=\'DrawGUI(\"'
 								+ divIDlinks + '\", \"' + divIDrechts + '\", '
-								+ res.parentID + ');\'>Nach oben</button>');
+								+ res.parentID + ');\'>-> Zurück</div>');
 			});
 }

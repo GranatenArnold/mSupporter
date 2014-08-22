@@ -2,8 +2,12 @@
  * 
  */
 
+var loader = "<img src='/report/toverview/pix/loader.gif' style='display: block; margin-left: auto; margin-right: auto; margin-top: 50px;'></src>";
+
 function tabelle(divID, fields, url) {
 			//console.log('/report/toverview/rest/router.php' + url);
+			var loader = "<img src='/report/toverview/pix/loader.gif' style='display: block; margin-left: auto; margin-right: auto; margin-top: 50px;'></src>";
+			$( "#"+divID ).html(loader);
 			$.ajax({
 				fields : fields,
 	            url: '/report/toverview/rest/router.php' + url,
@@ -24,7 +28,7 @@ function tabelle(divID, fields, url) {
         				data.addColumn(eigenschaften.typ, eigenschaften.bezeichnung);
         			});
         			data.addColumn('datetime', 'Erstellt');
-        			data.addColumn('datetime', 'GeÃ¤ndert');
+        			data.addColumn('datetime', 'GeÃƒÂ¤ndert');
         	    	result = result.Records;
         	    	var array = new Array();
         	    	$.each(result, function(id, felder) {

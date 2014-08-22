@@ -5,6 +5,7 @@
 		<script type="text/javascript">
 		
 			function KurstabelleZeichnen(suchstring) {
+				$('#courses').html(loader);
 				$.ajax({
 					url: "/report/toverview/rest/router.php/course/?query=" + suchstring,
 					dataType: 'json',
@@ -44,6 +45,7 @@
 			        	var selection = table.getSelection();
 			        	//alert("That's row " + data.getValue(selection[0].row, 0))
 			        	$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
+			        		$( "#getCourse" ).html(loader);
 	    					var x = data.getValue(selection[0].row, 0);
 	    					//console.log(x);
 	    					inhalt = inhalt.replace(/#ID#/g, x);
@@ -80,20 +82,20 @@
 	<body>
 		<div class="row">
 			<div class="col-md-6">
-				<div>
-					Kurs suchen:
-	        		<input id="search"></input>
-	        	</div>
+				<div class="panel panel-default">
+		            <div class="panel-heading">
+		              <h3 class="panel-title">
+		              	<div class="row">
+		              		<div class="col-md-2">Kurs suchen:</div>
+		              		<div class="col-md-10"><input id="search"></input></div>
+		              	</div>
+		            </div>
+		            <div class="panel-body" id="courses">
+		            </div>
+		          </div>
 	    	</div>
-		</div>
-	
-		<div class="row">
-			<div class="col-md-6">
-	        	<div id="courses"></div>
-	        </div>
-	        <div class="col-md-6">
+	    	<div class="col-md-6">
 				<div id = "getCourse"></div>
-	    	</div>
 		</div>
 	</body>
 </html>
