@@ -1,2 +1,72 @@
-<div id="leereKurse-div"></div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+		<div id='count'>
+			leere Kurse
+		</div></h3>
+	</div>
+	<div class="panel-body">
+		<div id="leereKurse-div">
+			<div class="loader"></div>
+		</div>
+	</div>
+</div>
 
+<script>
+	$(".loader").html(loader);
+	$.ajax({
+		url : '/report/toverview/rest/router.php/LeereKurse',
+		dataType : 'json',
+	}).done(function(result) {
+		$("#count").html(result.Count + " leere Kurse");
+		var data = new google.visualization.DataTable();
+		data.addColumn('number', 'ID');
+		data.addColumn('string', 'Semester');
+		data.addColumn('string', 'FB');
+		data.addColumn('string', 'Name');
+		var array = new Array();
+		result = result.Records;
+		//console.log(result);
+		$.each(result, function(id, felder) {
+			//console.log(felder);
+			var subarray = new Array();
+			subarray.push(parseInt(felder.id));
+			subarray.push(felder.semester);
+			subarray.push(felder.fb);
+			subarray.push(felder.fullname);
+			//data.addRow(array);
+			//data.addRow('boolean', eigenschaften.bezeichnung);
+			array.push(subarray);
+		});
+		data.addRows(array);
+		var table = new google.visualization.Table(document.getElementById('leereKurse-div'));
+		table.draw(data, {
+			showRowNumber : false
+		});
+		// Setup listener
+		google.visualization.events.addListener(table, 'select', selectHandler);
+
+		// Select Handler. Call the table's getSelection() method
+		function selectHandler() {
+			var selection = table.getSelection();
+			$.ajax({
+				url : "/report/toverview/html/detailed_course_view.html",
+				context : document.body,
+				success : function(inhalt) {
+					var x = data.getValue(selection[0].row, 0);
+					var find = "#ID#";
+					var regex = new RegExp(find, 'g');
+					//console.log(regex);
+					inhalt = inhalt.replace(regex, x);
+					//console.log(inhalt);
+					$("#getCourse").html(inhalt);
+					$("#tabs").tabs({
+						active : 0
+					});
+				}
+			});
+		}
+
+	});
+
+</script>

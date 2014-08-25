@@ -15,7 +15,7 @@
 		url : "/report/toverview/rest/router.php/inaktiveNutzer",
 		dataType : 'json',
 	}).done(function(result) {
-		$('#Header').html(result.Count + ' Nutzer');
+		$('#Header').html(result.Count + ' Nutzer, die seit mindestens 1 Jahr nicht mehr aktiv waren');
 		var data = new google.visualization.DataTable();
 		data.addColumn('number', 'ID');
 		data.addColumn('string', 'TU-ID');
