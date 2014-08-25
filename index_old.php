@@ -37,21 +37,21 @@ class tOverview {
 		//$table->attributes['class'] = 'admintable generaltable';
 		$table->data  = array();
 		$row = array();
-		//$row[] = '<a href="index.php?nav=ShowGeneralInformation">Allgemeine Informationen</a>';
-		//$row[] = '<a href="index.php?nav=ShowCategories">Kategorien</a>';
-		//$row[] = '<a href="index.php?nav=ShowCourses">Kurse</a>';
-		//$row[] = '<a href="index.php?nav=ShowCoursesWithMostContent">Kurse mit meisten Inhalten</a>';
-		//$row[] = '<a href="index.php?nav=ShowCoursesWithMostForums">Kurse mit meisten Foren</a>';
-		$row[] = '<a href="index.php?nav=Schnittstelle">Schnittstelle</a>';
-		$row[] = '<a href="index.php?nav=Gruppierungen">Gruppierungen</a>';
-		$row[] = '<a href="index.php?nav=ShowCoursesOrderedByAmountOfUsersDESC">Kurse mit Nutzern</a>';
-		$row[] = '<a href="index.php?nav=CountCoursesByCourseFormat">Kurs-Formate</a>';
-		//$row[] = '<a href="index.php?nav=ShowAdobeConnectSettings">Adobe Connect</a>';
-		$row[] = '<a href="index.php?nav=ShowGames">Games</a>';
-		$row[] = '<a href="index.php?nav=ContentsOfCoursesInCategory">Kursinhalte</a>';
-		$row[] = '<a href="index.php?nav=Helios">Helios</a>';
-		$row[] = '<a href="index.php?nav=LeereKurse">Leere Kurse</a>';
-		$row[] = '<a href="index.php?nav=Tutoren">Tutoren</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowGeneralInformation">Allgemeine Informationen</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowCategories">Kategorien</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowCourses">Kurse</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowCoursesWithMostContent">Kurse mit meisten Inhalten</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowCoursesWithMostForums">Kurse mit meisten Foren</a>';
+		$row[] = '<a href="index_old.php?nav=Schnittstelle">Schnittstelle</a>';
+		$row[] = '<a href="index_old.php?nav=Gruppierungen">Gruppierungen</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCoursesOrderedByAmountOfUsersDESC">Kurse mit Nutzern</a>';
+		$row[] = '<a href="index_old.php?nav=CountCoursesByCourseFormat">Kurs-Formate</a>';
+		//$row[] = '<a href="index_old.php?nav=ShowAdobeConnectSettings">Adobe Connect</a>';
+		$row[] = '<a href="index_old.php?nav=ShowGames">Games</a>';
+		$row[] = '<a href="index_old.php?nav=ContentsOfCoursesInCategory">Kursinhalte</a>';
+		$row[] = '<a href="index_old.php?nav=Helios">Helios</a>';
+		$row[] = '<a href="index_old.php?nav=LeereKurse">Leere Kurse</a>';
+		$row[] = '<a href="index_old.php?nav=Tutoren">Tutoren</a>';
 		$table->data[] = $row;
 		echo html_writer::table($table);
 		echo $OUTPUT->heading("Kategorien", 4);
@@ -59,12 +59,12 @@ class tOverview {
 		$table->data  = array();
 		$row = array();
 				
-		$row[] = '<a href="index.php?nav=ShowCategoryFiles">Dateien</a>';
-		$row[] = '<a href="index.php?nav=ShowCategoryCommunication">Kommunikation</a>';
-		$row[] = '<a href="index.php?nav=ShowCategoryTest">(Selbst-)Selbstüberprüfung</a>';
-		$row[] = '<a href="index.php?nav=ShowCategoryCooperation">Kooperation</a>';
-		$row[] = '<a href="index.php?nav=ShowCategoryCourseOrganisation">Lehrorganisation</a>';
-		$row[] = '<a href="index.php?nav=ShowCategoryFeedback">Rückmeldungen</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryFiles">Dateien</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryCommunication">Kommunikation</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryTest">(Selbst-)Selbstüberprüfung</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryCooperation">Kooperation</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryCourseOrganisation">Lehrorganisation</a>';
+		$row[] = '<a href="index_old.php?nav=ShowCategoryFeedback">Rückmeldungen</a>';
 		
 		
 		$table->data[] = $row;
@@ -136,7 +136,7 @@ class tOverview {
 		$result = mssql_query($query);
 		$sum = mssql_fetch_array($result);
 		if($asLink) {
-			return "<a href='/course/index.php?categoryid=".$categoryID."'>".$sum[0]."</a>";
+			return "<a href='/course/index_old.php?categoryid=".$categoryID."'>".$sum[0]."</a>";
 		}
 		return $sum[0];
 	}
@@ -163,7 +163,7 @@ class tOverview {
 		$FBid = $this->GetCategoryOfCourse($id);
 		$FB = $this->GetCategoryName($FBid);
 		if($asLink) {
-			$FBLink = "<a href=/course/index.php?categoryid=".$FBid.">".$FB."</a>";
+			$FBLink = "<a href=/course/index_old.php?categoryid=".$FBid.">".$FB."</a>";
 			return $FBLink;
 		}
 		return $FB;
@@ -174,7 +174,7 @@ class tOverview {
 		$semester = $this->GetCategoryName($semesterid);
 		if($asLink) {
 			GLOBAL $CFG;
-			$semester = "<a href=/course/index.php?categoryid=".$semesterid.">".$semester."</a>";
+			$semester = "<a href=/course/index_old.php?categoryid=".$semesterid.">".$semester."</a>";
 			return $semester;
 		}
 		return $semester;

@@ -26,6 +26,8 @@ $app->map ( '/user/id/:id', 'userDetailed' )->via ( 'GET', 'POST');
 $app->map ( '/Category(/:id)', 'Category' )->via ( 'GET', 'POST' );
 $app->map ( '/Schnittstelle(/:id)', 'Schnittstelle' )->via ( 'GET', 'POST' );
 $app->map ( '/Kategorie(/:id)', 'Kategorie' )->via ( 'GET', 'POST' );
+$app->map ( '/LeereKurse', 'LeereKurse' )->via ( 'GET' );
+$app->map ( '/inaktiveNutzer', 'inaktiveNutzer' )->via ( 'GET', 'POST' );
 $app->run ();
 function course() {
 	$app = \Slim\Slim::getInstance ();
@@ -423,7 +425,7 @@ function sendeText($text, $convert=true) {
 		if ($convert && is_array($text))
 			$text = print_r($text, true);
 		sendeHeader();
-		echo $text;
+		echo "<pre>".$text."</pre>";
 	}
 
 function sendeHeader($type="text/plain") {
@@ -502,6 +504,34 @@ function Kategorie($category = 0) {
 		$array = array("parentName" => $id->name, "parentID" => $parent);
 	}
 	//echo "<pre>".print_r($array, true)."</pre>";
+	sendeJSON($array);
+}
+
+function LeereKurse() {
+	GLOBAL $DB;
+	$sql = "SELECT
+	mdl_course.id,
+	mdl_course.category AS fbID,
+	mdl_course.fullname,
+	mdl_course.shortname,
+	(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS fb,
+	(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category) AS semesterID,
+	(SELECT mdl_course_categories.name FROM mdl_course_categories WHERE mdl_course_categories.id=(SELECT mdl_course_categories.parent FROM mdl_course_categories WHERE mdl_course_categories.id=mdl_course.category)) AS semester
+FROM
+	mdl_course
+WHERE
+	(SELECT COUNT(mdl_course_modules.course) FROM mdl_course_modules WHERE mdl_course_modules.course=mdl_course.id GROUP BY mdl_course_modules.course) < 2";
+	
+	$result = $DB->get_records_sql($sql);
+	$array = array("Result" => "OK", "Count" => count($result), "Records" => $result );
+	sendeJSON($array);
+}
+
+function inaktiveNutzer($minTimeDiff = 0) {
+	GLOBAL $DB;
+	$sql = "SELECT id, username, firstname + ' ' + lastname AS fullname, ".time()."-lastaccess as timediff FROM {user} WHERE auth LIKE 'cas' AND ".time()."-lastaccess > ".$minTimeDiff." ORDER BY timediff DESC";
+	$result = $DB->get_records_sql($sql);
+	$array = array("Result" => "OK", "Count" => count($result), "Records" => $result );
 	sendeJSON($array);
 }
 
