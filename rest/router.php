@@ -34,7 +34,7 @@ function course() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 	
-	$sql = "SELECT TOP 30
+	$sql = "SELECT
 		{course}.id,
 		{course}.fullname,
 		{course}.category as fbID,
