@@ -2,16 +2,32 @@
 <html>
 	<head>
 		<base target="_self">
+		
  		<!-- Create table -->
 		<script type="text/javascript">
 		
-			function KurstabelleZeichnen() {
+			//------------------------------------------------------------------//
+			// Load the Visualization API and the controls package.
+			//------------------------------------------------------------------//
+	    	google.load('visualization', '1.1', {'packages':['controls']});
+
+			//------------------------------------------------------------------//
+	    	// Set a callback to run when the Google Visualization API is loaded.
+	    	//------------------------------------------------------------------//
+	    	google.setOnLoadCallback(DrawDashboard());
+			
+	    	//------------------------------------------------------------------//
+	    	// Dashboard Function.
+	    	//------------------------------------------------------------------//
+			function DrawDashboard() {
 				$.ajax({
 					url: "/report/toverview/rest/router.php/course/",
 					dataType: 'json'
 				}).done(function (result) {
 					
+					//------------------------------------------------------------------//
 					// Create and populate the data table.
+					//------------------------------------------------------------------//
 					var data = new google.visualization.DataTable();
 					data.addColumn('number', 'ID');
 			        data.addColumn('string', 'Semester');
@@ -34,10 +50,14 @@
         			});
         	    	data.addRows(array);
         	    	
+        	    	//------------------------------------------------------------------//
         	    	// Create a dashboard.
-        	    	var dashboard = new google.visualization.Dashboard(document.querySelector('#dashboard'));
+        	    	//------------------------------------------------------------------//
+        	    	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
         	    	
-        	    	// Create a search box to search for the course name
+        	    	//------------------------------------------------------------------//
+        	    	// Create a search box to search for the course name.
+        	    	//------------------------------------------------------------------//
         	    	var stringFilter = new google.visualization.ControlWrapper({
         	            controlType: 'StringFilter',
         	            containerId: 'string_filter_div',
@@ -50,7 +70,9 @@
         	            }
         	        });
         	    	
+        	    	//------------------------------------------------------------------//
 		        	// Create a category picker to filter by Semester.
+		        	//------------------------------------------------------------------//
 		        	var categoryPickerSemester = new google.visualization.ControlWrapper({
 		        	  'controlType': 'CategoryFilter',
 		        	  'containerId': 'semester_filter_div',
@@ -58,12 +80,15 @@
 		        	    filterColumnLabel: 'Semester',
 		        	    ui: {
 		        	    	caption: 'Nach Semester filtern',
-		        	    	label: ''
+		        	    	label: '',
+		        	    	allowTyping: false
 		        	    }
 		        	  }
 		        	});
 		        	
+		        	//------------------------------------------------------------------//
 		        	// Create a category picker to filter by Fachbereich.
+		        	//------------------------------------------------------------------//
 		        	var categoryPickerFB = new google.visualization.ControlWrapper({
 		        	  'controlType': 'CategoryFilter',
 		        	  'containerId': 'fb_filter_div',
@@ -71,38 +96,48 @@
 		        	    filterColumnLabel: 'FB',
 		        	    ui: {
 		        	    	caption: 'Nach Fachbereich filtern',
-		        	    	label: ''
+		        	    	label: '',
+		        	    	allowTyping: false
 		        	    }
 		        	  }
 		        	});
-        	    	
+		        	
+		        	//------------------------------------------------------------------//
 		        	// Create the table to display.
+		        	//------------------------------------------------------------------//
         	    	var table = new google.visualization.ChartWrapper({
         	            chartType: 'Table',
         	            containerId: 'table_div',
         	            options: {
-        	                showRowNumber: true,
+        	                showRowNumber: false,
         	                page: 'enable',
-        	                pageSize: 30
+        	                pageSize: 25
         	            }
         	        });
         	    	
-		        	// Bind the filters to the table so they can be applied.
+        	    	//------------------------------------------------------------------//
+		        	// Establish dependencies.
+		        	//------------------------------------------------------------------//
         	    	dashboard.bind([stringFilter, categoryPickerSemester, categoryPickerFB], [table]);
 		        	
+        	    	//------------------------------------------------------------------//
 		        	// Draw the dashboard.
+		        	//------------------------------------------------------------------//
         	    	dashboard.draw(data);
 			        
+        	    	//------------------------------------------------------------------//
         	    	// Define what to do when selecting a table row.
+        	    	//------------------------------------------------------------------//
 		        	function selectHandler() {
 		        		var selection = table.getChart().getSelection();
-		        		//console.log(selection.length);
 		        		for (var i = 0; i < selection.length; i++) {
 		        			$.get("/report/toverview/html/detailed_course_view.html", function( inhalt ) {
 				        		$( "#getCourse" ).html(loader);
-		    					var x = data.getValue(selection[0].row, 0);
-		    					console.log(data.getColumnLabel(0));
-		    					inhalt = inhalt.replace(/#ID#/g, x);
+				        		
+				        		var selectedCourseId = table.getDataTable().getFormattedValue(selection[0].row, 0);
+				        		//console.log(selectedCourseId);
+				        		
+		    					inhalt = inhalt.replace(/#ID#/g, selectedCourseId);
 		    					//console.log(inhalt);
 		    					$( "#getCourse" ).html(inhalt);
 		    					$('body,html').animate({scrollTop:0},800);
@@ -110,19 +145,14 @@
 		        		}
 		        	};
 		        	
+		        	//------------------------------------------------------------------//
 			        // Setup listener to listen for clicks on table rows and process the selectHandler.
-			        google.visualization.events.addListener(table, 'ready', function(){
-			        	google.visualization.events.addListener(table.getChart(), 'select', selectHandler);
-			        });
+			        //------------------------------------------------------------------//
+			        google.visualization.events.addListener(table, 'select', selectHandler);
 				});
 			};
 			
 			
-			// Load the Visualization API and the controls package.
-		    google.load('visualization', '1', {'packages':['controls']});
-
-		    // Set a callback to run when the Google Visualization API is loaded.
-		    google.setOnLoadCallback(KurstabelleZeichnen());
 			
 		</script>
 	</head>
