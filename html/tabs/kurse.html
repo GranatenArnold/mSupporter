@@ -53,14 +53,14 @@
         	    	//------------------------------------------------------------------//
         	    	// Create a dashboard.
         	    	//------------------------------------------------------------------//
-        	    	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+        	    	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboardCourses'));
         	    	
         	    	//------------------------------------------------------------------//
         	    	// Create a search box to search for the course name.
         	    	//------------------------------------------------------------------//
         	    	var stringFilter = new google.visualization.ControlWrapper({
         	            controlType: 'StringFilter',
-        	            containerId: 'string_filter_div',
+        	            containerId: 'string_filter_div_kurse',
         	            options: {
         	                filterColumnLabel: 'Name',
         	                matchType: 'any',
@@ -75,7 +75,7 @@
 		        	//------------------------------------------------------------------//
 		        	var categoryPickerSemester = new google.visualization.ControlWrapper({
 		        	  'controlType': 'CategoryFilter',
-		        	  'containerId': 'semester_filter_div',
+		        	  'containerId': 'semester_filter_div_kurse',
 		        	  'options': {
 		        	    filterColumnLabel: 'Semester',
 		        	    ui: {
@@ -91,7 +91,7 @@
 		        	//------------------------------------------------------------------//
 		        	var categoryPickerFB = new google.visualization.ControlWrapper({
 		        	  'controlType': 'CategoryFilter',
-		        	  'containerId': 'fb_filter_div',
+		        	  'containerId': 'fb_filter_div_kurse',
 		        	  'options': {
 		        	    filterColumnLabel: 'FB',
 		        	    ui: {
@@ -107,7 +107,7 @@
 		        	//------------------------------------------------------------------//
         	    	var table = new google.visualization.ChartWrapper({
         	            chartType: 'Table',
-        	            containerId: 'table_div',
+        	            containerId: 'table_div_kurse',
         	            options: {
         	                showRowNumber: false,
         	                page: 'enable',
@@ -160,17 +160,17 @@
 	<body>
 		<div class="row">
 			<div class="col-md-6">
-				<div id="dashboard">
+				<div id="dashboardCourses">
 					<div class="panel panel-default">
 		            	<div class="panel-heading">
 		              		<h3 class="panel-title"></h3>
 		              			<div class="row">
-    								<div class="col-md-4" id="string_filter_div"></div>
-    								<div class="col-md-4" id="semester_filter_div"></div>
-    								<div class="col-md-4" id="fb_filter_div"></div>
+    								<div class="col-md-4" id="string_filter_div_kurse"></div>
+    								<div class="col-md-4" id="semester_filter_div_kurse"></div>
+    								<div class="col-md-4" id="fb_filter_div_kurse"></div>
     							</div>
     						</div>
-    					<div class="panel-body" id="table_div"></div>
+    					<div class="panel-body" id="table_div_kurse"></div>
     				</div>
 				</div>
 	    	</div>
