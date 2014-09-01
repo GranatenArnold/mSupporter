@@ -34,6 +34,7 @@
 					data.addColumn('string', 'Vorname');
 					data.addColumn('string', 'Nachname');
 					data.addColumn('string', 'E-Mail');
+					data.addColumn('string', 'FullName')
 			        var array = new Array();
 			        result = result.Records;
 			        //console.log(result);
@@ -46,11 +47,16 @@
         				subarray.push(felder.firstname);
         				subarray.push(felder.lastname);
         				subarray.push(felder.email);
+        				subarray.push(felder.firstname + ' ' + felder.lastname);
         	    		//data.addRow(array);
         				//data.addRow('boolean', eigenschaften.bezeichnung);
         				array.push(subarray);
         			});
         	    	data.addRows(array);
+        	    	
+        	    	var view = new google.visualization.DataView(data);
+        	    	//view.setColumns([0,1,2,3,4,5]);
+        	    	//view.hideColumns([5]);
         	    	
         	    	//------------------------------------------------------------------//
         	    	// Create a dashboard.
@@ -64,7 +70,7 @@
         	            controlType: 'StringFilter',
         	            containerId: 'string_filter_div_nutzer',
         	            options: {
-        	                filterColumnLabel: 'Nachname',
+        	                filterColumnIndex: 5,
         	                matchType: 'any',
         	                ui: {
         	                	label: 'Nutzer suchen:'
@@ -93,7 +99,7 @@
         	    	//------------------------------------------------------------------//
 		        	// Draw the dashboard.
 		        	//------------------------------------------------------------------//
-        	    	dashboard.draw(data);
+        	    	dashboard.draw(view, {'view': {'columns': [0, 1, 2, 3]}});
 			        
         	    	//------------------------------------------------------------------//
         	    	// Define what to do when selecting a table row.
