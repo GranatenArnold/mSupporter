@@ -31,7 +31,7 @@
 			        data.addColumn('string', 'Semester');
 			        data.addColumn('string', 'FB');
 			        data.addColumn('string', 'Name');
-			        data.addColumn('string', 'Erstellt am');
+			        data.addColumn('datetime', 'Erstellt am');
 			        var array = new Array();
 			        result = result.Records;
 			        //console.log(result);
@@ -43,7 +43,7 @@
         	    		subarray.push(felder.semester);
         	    		subarray.push(felder.fb);
         	    		subarray.push(felder.fullname);
-        	    		subarray.push(felder.timecreated);
+        	    		subarray.push(new Date(felder.timecreated*1000));
         	    		//console.log(felder.timecreated);
         	    		//data.addRow(array);
         				//data.addRow('boolean', eigenschaften.bezeichnung);
