@@ -31,9 +31,9 @@
 					var data = new google.visualization.DataTable();
 					data.addColumn('number', 'ID');
 			        data.addColumn('string', 'Semester');
-			        data.addColumn('string', 'FB');
+			        data.addColumn('string', 'Fachbereich');
 			        //data.addColumn('string', 'Name');
-			        data.addColumn('string', 'Name <br /><i>Kurzname</i>');
+			        data.addColumn('string', 'Name / <i>Kurzname</i>');
 			        var array = new Array();
 			        result = result.Records;
 			        //console.log(result);
@@ -95,7 +95,7 @@
 		        	  'controlType': 'CategoryFilter',
 		        	  'containerId': 'fb_filter_div_kurse',
 		        	  'options': {
-		        	    filterColumnLabel: 'FB',
+		        	    filterColumnLabel: 'Fachbereich',
 		        	    ui: {
 		        	    	caption: 'Nach Fachbereich filtern',
 		        	    	label: '',
