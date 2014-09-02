@@ -32,7 +32,8 @@
 					data.addColumn('number', 'ID');
 			        data.addColumn('string', 'Semester');
 			        data.addColumn('string', 'FB');
-			        data.addColumn('string', 'Name');
+			        //data.addColumn('string', 'Name');
+			        data.addColumn('string', 'Name <br /><i>Kurzname</i>');
 			        var array = new Array();
 			        result = result.Records;
 			        //console.log(result);
@@ -43,7 +44,8 @@
         	    		subarray.push(parseInt(felder.id));
         	    		subarray.push(felder.semester);
         	    		subarray.push(felder.fb);
-        	    		subarray.push(felder.fullname);
+        	    		//subarray.push(felder.fullname);
+        	    		subarray.push(felder.fullname + '<br /><i>' + felder.shortname + '</i>');
         	    		//data.addRow(array);
         				//data.addRow('boolean', eigenschaften.bezeichnung);
         				array.push(subarray);
@@ -62,7 +64,7 @@
         	            controlType: 'StringFilter',
         	            containerId: 'string_filter_div_kurse',
         	            options: {
-        	                filterColumnLabel: 'Name',
+        	                filterColumnIndex: 3,
         	                matchType: 'any',
         	                ui: {
         	                	label: 'Kurs suchen:'
@@ -111,7 +113,8 @@
         	            options: {
         	                showRowNumber: false,
         	                page: 'enable',
-        	                pageSize: 25
+        	                pageSize: 25,
+        	                allowHtml: true
         	            }
         	        });
         	    	
