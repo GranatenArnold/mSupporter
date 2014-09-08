@@ -73,14 +73,14 @@
 	    		//
 	    		$("#tablink_User").click(function() {
 	    			if ($('#getUser').is(':empty')) {
-	    				$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
+	    				$.get("/report/toverview/html/tabs/nutzer2.html", function( inhalt ) {
 							$( "#nutzer" ).html(inhalt);
 						});
 	    			}
 	    			else {
 	    				var v1 = $('#getUser').html();
 						//console.log(v1);
-						$.get("/report/toverview/html/tabs/nutzer.html", function( inhalt ) {
+						$.get("/report/toverview/html/tabs/nutzer2.html", function( inhalt ) {
 							$( "#nutzer" ).html(inhalt);
 							$('#getUser').html(v1);
 						});
