@@ -529,7 +529,7 @@ WHERE
 	sendeJSON($array);
 }
 
-function inaktiveNutzer($minTimeDiff = 290736000) {
+function inaktiveNutzer($minTimeDiff = 31536000) {
 	GLOBAL $DB;
 	$sql = "SELECT id, username, firstname + ' ' + lastname AS fullname, ".time()."-lastaccess as timediff FROM {user} WHERE auth LIKE 'cas' AND ".time()."-lastaccess > ".$minTimeDiff." ORDER BY timediff DESC";
 	$result = $DB->get_records_sql($sql);
@@ -539,7 +539,7 @@ function inaktiveNutzer($minTimeDiff = 290736000) {
 
 function NeuesteKurse() {
 	GLOBAL $DB;
-	$sql = "SELECT TOP 5
+	$sql = "SELECT TOP 50
 				mdl_course.timecreated,
     			mdl_course.fullname,
 				mdl_course.id,
