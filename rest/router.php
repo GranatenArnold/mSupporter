@@ -38,6 +38,7 @@ function course() {
 	$sql = "SELECT
 		{course}.id,
 		{course}.fullname,
+		{course}.shortname,
 		{course}.category as fbID,
 		(SELECT name FROM {course_categories} WHERE id={course}.category) as fb,
 		(SELECT parent FROM {course_categories} WHERE id={course}.category) as semesterID,
@@ -348,7 +349,7 @@ function user() {
 	$query = $app->request->get ( 'query' );
 	global $DB;
 
-	$sql = "SELECT TOP 20
+	$sql = "SELECT
 				{user}.id,
 				{user}.username,
 				{user}.firstname,
@@ -538,7 +539,7 @@ function inaktiveNutzer($minTimeDiff = 290736000) {
 
 function NeuesteKurse() {
 	GLOBAL $DB;
-	$sql = "SELECT TOP 50
+	$sql = "SELECT TOP 5
 				mdl_course.timecreated,
     			mdl_course.fullname,
 				mdl_course.id,
